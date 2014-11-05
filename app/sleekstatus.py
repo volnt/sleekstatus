@@ -1,5 +1,5 @@
 from ast import literal_eval
-from mail import Mail
+from app.utils import Mail
 import requests
 import redis
 

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html ng-app="app" ng-controller="MainCtrl">
+  <head>
+    <title>Sleekstatus</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="static/css/libs/bootstrap.min.css" rel="stylesheet">
+    <link href="static/css/screen.css" media="screen, projection" rel="stylesheet" type="text/css" />
+    <link href="static/css/print.css" media="print" rel="stylesheet" type="text/css" />
+    <!--[if IE]>
+        <link href="/css/ie.css" media="screen, projection" rel="stylesheet" type="text/css" />
+        <![endif]-->
+  </head>
+  <body>
+    <div class="container">
+      <nav class="navbar navbar-inverse navbar-fixed-top navbar-transparent" role="navigation">
+        <div class="container">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">     
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Sleekstatus</a>
+          </div>
+        </div>
+      </nav>
+    </div>
+
+    <div ng-view></div>
+
+    <script src="static/js/libs/jquery.min.js"></script>
+    <script src="static/js/libs/bootstrap.min.js"></script>
+    <script src="static/js/libs/angular.min.js"></script>
+    <script src="static/js/libs/angular-route.min.js"></script>
+
+    <script src="static/js/app/app.js"></script>
+    <script src="static/js/app/controller/main.js"></script>
+    <script src="static/js/app/controller/index.js"></script>
+  </body>
+</html>

@@ -1,0 +1,160 @@
+/* Welcome to Compass.
+ * In this file you should write your main styles. (or centralize your imports)
+ * Import this file using the following HTML or equivalent:
+ * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
+
+@import "compass/reset";
+
+@font-face {
+    font-family: CaviarDreams;
+    src: url(fonts/CaviarDreams.ttf);
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: CaviarDreams;
+}
+
+.btn-bigger {
+    font-size: 20px;
+}
+
+.btn-cta {
+    font-family: sans-serif;
+    font-size: 28px;
+}
+
+.input-bigger {
+    font-size: 20px;
+}
+
+.background {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: -9;
+    img {
+        position: absolute;
+        left: 50%;
+        margin-left: -960px;
+    }
+}
+
+.navbar-fixed-top {
+    border-radius: 5px;
+}
+
+.navbar-brand {
+    font-weight: bold;
+}
+
+.navbar-transparent {
+    background-color: transparent;
+    border-color: transparent;
+    .navbar-brand {
+        color: white;
+    }
+    .navbar-brand:hover {
+        color: #ccc;
+    }
+}
+
+#promotion {
+    text-align: center;
+    margin-top: 25%;
+    margin-bottom: 25%;
+    height: 50%;
+    h2 {
+        font-size: 60px;
+        font-weight: bold;
+        margin-bottom: 100px;
+    }
+}
+
+.landing {
+    min-height: 100%;
+    p, h1, h2, h3, h4 {
+        color: white;
+    }
+}
+
+.message-input {
+    position: fixed;
+    bottom: 0;
+    margin-bottom: -15px;
+    width: 100%;
+    input {
+        background: white;
+    }
+}
+
+.btn-icon {
+    &:hover {
+        color: black;
+    }
+    cursor: pointer;
+}
+
+.messages-container {
+    padding-top: 60px;
+    padding-left: 15%;
+    padding-right: 15%;
+    text-align: justify;
+    font-size: 20px;
+    background: white;
+    color: #4D4E53;
+    border-right: solid 1px #ccc;
+    border-left: solid 1px #ccc;
+    .message {
+        margin-bottom: 10px;
+        min-height: 100px;
+        position: relative;
+        border-bottom: #ccc solid 1px;
+        padding: 5px;
+        .message-content {
+            min-height: inherit;
+            word-wrap: break-word;
+        }
+        .message-details {
+            font-size: 16px;
+            min-height: inherit;
+            position: relative;
+            .message-date {
+                text-align: right;
+                min-height: 50px;
+            }
+            .message-vote {
+                text-align: right;
+                min-height: 50px;
+            }
+        }
+    }
+}
+
+
+.input-group-addon {
+    cursor: pointer;
+    a {
+        text-decoration: initial;
+        color: #4D4E53;
+    }
+}
+.input-group-addon:hover {
+    background: #f3f3f3;
+}
+
+.space-1 { height: 10px; }
+.space-2 { height: 20px; }
+.space-3 { height: 30px; }
+.space-4 { height: 40px; }
+.space-5 { height: 50px; }
+.space-6 { height: 60px; }
+.space-7 { height: 70px; }
+.space-8 { height: 80px; }
