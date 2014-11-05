@@ -1,4 +1,4 @@
-from config import MAIL
+from app.config import MAIL
 import smtplib, os, sys
 from email.MIMEMultipart import MIMEMultipart
 from email.MIMEBase import MIMEBase
