@@ -1,18 +1,24 @@
-from ast import literal_eval
 from app.utils import Mail
+from app import redis
 import requests
-import redis
 
-redis = redis.Redis()
+def get_alert_ids():
+    return redis.smembers("sl:alert:ids")
+
+def get_alert(alert_id):
+    return redis.hgetall("sl:alert:{}".format(alert_id))
+
+def trigger_alert(alert):
+    subject = "[WEBSTATUS] {} - KO".format(alert["url"])
+    content = """Hi, it seems that your website is down."""
+    Mail(subject, content, [alert["email"]]).send()
 
 def main():
-    ids = redis.smembers("webstatus:ids")
-    for wid in ids:
-        status = literal_eval(redis.get("webstatus:{}".format(wid)))
-        if not requests.get(status["url"]).ok:
-            subject = "[WEBSTATUS] {} - KO".format(status["url"])
-            content = """Hi, it seems that your website is down."""
-            Mail(subject, content, [status["email"]]).send()
+    slids = get_alert_ids()
+    for slid in slids:
+        alert = get_alert(slid)
+        if not requests.get(alert["url"]).ok:
+            trigger_alert(alert)
 
 if __name__ == "__main__":
     main()
