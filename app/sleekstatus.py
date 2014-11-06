@@ -17,6 +17,7 @@ def main():
     slids = get_alert_ids()
     for slid in slids:
         alert = get_alert(slid)
+        print alert
         if not requests.get(alert["url"]).ok:
             trigger_alert(alert)
 

@@ -1,0 +1,58 @@
+from app import app, redis
+from hashlib import sha1
+from flask import jsonify, make_response, abort, request
+from user import is_authenticated
+
+class Alert(object):
+    def __init__(self, email, url):
+        self.email = email
+        self.url = url
+
+    def save(self):
+        alert_sha = sha1(self.email+self.url).hexdigest()
+        email_sha = sha1(self.email).hexdigest()
+
+        return (redis.sadd("sl:alert:ids", alert_sha) and
+                redis.sadd("sl:account:{}:alerts".format(email_sha), alert_sha) and
+                redis.hmset("sl:alert:{}".format(alert_sha), self.to_dict()))
+
+    @staticmethod
+    def delete(email, url):
+        alert_sha = sha1(self.email+self.url).hexdigest()
+        email_sha = sha1(self.email).hexdigest()
+
+        alert = redis.hgetall("sl:alert:{}".format(alert_sha))
+        return (alert and redis.srem("sl:alert:ids", alert_sha) and
+                redis.srem("sl:account:{}:alerts".format(email_sha), alert_sha))
+        
+
+    @classmethod
+    def from_sha(cls, sha):
+        return cls(**redis.hgetall("sl:alert:{}".format(sha)))
+
+    def to_dict(self):
+        return {"email": self.email, "url": self.url }
+
+    @staticmethod
+    def get_user_alerts(email):
+        sha = sha1(email).hexdigest()
+
+        return redis.smembers("sl:account:{}:alerts".format(sha))
+
+@is_authenticated
+@app.route('/api/alert/create', methods=['POST'])
+def create_alert():
+    alert = Alert(request.json.get("email"), request.json.get("url"))
+
+    if alert.save():
+        return make_response(jsonify(alert.to_dict()))
+    else:
+        return make_response(jsonify({"error": "Could not create alert"}), 400)
+
+@is_authenticated
+@app.route('/api/alert/delete', methods=['POST'])
+def delete_alert():
+    if Alert.delete(request.json.get("email"), request.json.get("url")):
+        return make_response(jsonify({"success": "Alert has been removed successfully."}))
+    else:
+        return make_response(jsonify({"error": "Could not create alert"}), 400)

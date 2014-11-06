@@ -23,14 +23,14 @@ class User(object):
         self.password = password
 
     def register(self):
-        sha = sha1(self.email)
+        sha = sha1(self.email).hexdigest()
 
         return (redis.sadd("sl:account:ids", sha) and
                 redis.hmset("sl:account:{}".format(sha), self.to_dict()))
 
     @staticmethod
     def valid_auth(email, password):
-        sha = sha1(email)
+        sha = sha1(email).hexdigest()
         user_info = redis.hgetall("sl:account:{}".format(sha))
 
         return user_info and user_info.get("password") == password
@@ -44,7 +44,7 @@ class User(object):
         the user. Then if it's unknown we register him and if the
         user is known but the passwords don't match we return None.
         """
-        sha = sha1(email)
+        sha = sha1(email).hexdigest()
         user = cls(email, password)
 
         if cls.valid_auth(email, password):
