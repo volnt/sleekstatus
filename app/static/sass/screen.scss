@@ -5,11 +5,6 @@
 
 @import "compass/reset";
 
-@font-face {
-    font-family: CaviarDreams;
-    src: url(fonts/CaviarDreams.ttf);
-}
-
 html, body {
     height: 100%;
 }
@@ -18,7 +13,7 @@ body {
     width: 100%;
     margin: 0;
     padding: 0;
-    font-family: CaviarDreams;
+    font-family: sans-serif;
 }
 
 .btn-bigger {
@@ -55,6 +50,13 @@ body {
     font-weight: bold;
 }
 
+.form-register {
+    width: 50%;
+    margin: auto;
+    border: solid 1px white;
+    border-radius: 10px;
+}
+
 .navbar-transparent {
     background-color: transparent;
     border-color: transparent;
@@ -68,9 +70,7 @@ body {
 
 #promotion {
     text-align: center;
-    margin-top: 25%;
-    margin-bottom: 25%;
-    height: 50%;
+    margin-top: 20%;
     h2 {
         font-size: 60px;
         font-weight: bold;
@@ -85,59 +85,12 @@ body {
     }
 }
 
-.message-input {
-    position: fixed;
-    bottom: 0;
-    margin-bottom: -15px;
-    width: 100%;
-    input {
-        background: white;
-    }
-}
-
 .btn-icon {
     &:hover {
         color: black;
     }
     cursor: pointer;
 }
-
-.messages-container {
-    padding-top: 60px;
-    padding-left: 15%;
-    padding-right: 15%;
-    text-align: justify;
-    font-size: 20px;
-    background: white;
-    color: #4D4E53;
-    border-right: solid 1px #ccc;
-    border-left: solid 1px #ccc;
-    .message {
-        margin-bottom: 10px;
-        min-height: 100px;
-        position: relative;
-        border-bottom: #ccc solid 1px;
-        padding: 5px;
-        .message-content {
-            min-height: inherit;
-            word-wrap: break-word;
-        }
-        .message-details {
-            font-size: 16px;
-            min-height: inherit;
-            position: relative;
-            .message-date {
-                text-align: right;
-                min-height: 50px;
-            }
-            .message-vote {
-                text-align: right;
-                min-height: 50px;
-            }
-        }
-    }
-}
-
 
 .input-group-addon {
     cursor: pointer;

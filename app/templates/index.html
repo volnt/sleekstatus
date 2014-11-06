@@ -4,6 +4,15 @@
 <div class="container landing">
   <section id="promotion">
     <h2>Get an email when your website goes down for 1$/mo.</h2>
-    <a href="#" class="btn btn-default btn-cta">Register now</a>
+
+    <form class="form form-register" role="form" style="width: 50%; margin: auto; border: solid 1px white; padding: 20px;">
+      <div class="form-group">
+        <input type="email" class="form-control input-bigger input-lg" id="input-email" placeholder="Email" ng-model="register.email">
+      </div>
+      <div class="form-group">
+        <input type="password" class="form-control input-bigger input-lg" id="input-password" placeholder="Password" ng-model="register.password">
+      </div>
+      <button type="submit" class="btn btn-warning btn-cta">Start now</a>
+    </form>
   </section>
 </div>
