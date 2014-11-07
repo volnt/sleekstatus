@@ -3,8 +3,12 @@ app.controller("DashboardCtrl", function($scope, $http, $routeParams, $location,
   $scope.Alert = Alert;
   $scope.Auth = Auth;
   $scope.alerts = [];
+  $scope.navtabs = {
+    "alerts": true,
+    "subscription": false
+  };
 
-  $scope.get_alerts = function() {
+  $scope.getAlerts = function() {
     var params = {"auth": $scope.Auth.get(), "email": $scope.Auth.get().email};
     $http.post("/api/alert/get", params).success(function(response) {
       $scope.alerts = response.alerts;
@@ -34,6 +38,16 @@ app.controller("DashboardCtrl", function($scope, $http, $routeParams, $location,
     });
   };
 
+  $scope.toggleAlerts = function() {
+    $scope.navtabs.alerts = true;
+    $scope.navtabs.subscription = false;
+  };
+
+  $scope.toggleSubscription = function() {
+    $scope.navtabs.alerts = false;
+    $scope.navtabs.subscription = true;
+  };
+
   $scope.main = function() {
     /*
     * Entry point of the controller.
@@ -42,6 +56,6 @@ app.controller("DashboardCtrl", function($scope, $http, $routeParams, $location,
       $location.url("/");
     });
     $(".navbar").removeClass("navbar-transparent").addClass("navbar-default");
-    $scope.get_alerts();
+    $scope.getAlerts();
   }();
 });

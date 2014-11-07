@@ -1,28 +1,42 @@
 <section id="dashboard">
   <div class="container alerts-container">
-    <h2 style="padding-left: 20px">Alerts setup <small>({{ alerts.length }}/10)</small></h2>
-    <hr>
-    <div ng-hide="alerts.length">
-      <p style="padding-left: 20px;">
-        No alerts configured yet.
-      </p>
-    </div>
-    <div class="alerts" ng-show="alerts.length">
-      <form class="form" role="form">
-        <div class="alert" ng-repeat="alert in alerts">
-          <div class="form-group col-lg-6">
-            <input class="form-control input-bigger input-lg" ng-model="alert.url" disabled>
+
+    <ul class="nav nav-tabs nav-justified" role="tablist">
+      <li ng-class="{active : navtabs.alerts}" ng-click="toggleAlerts()"><a href="#/dashboard">Alerts</a></li>
+      <li ng-class="{active : navtabs.subscription}" ng-click="toggleSubscription()"><a href="#/dashboard">Subscription</a></li>
+    </ul>
+
+    <div ng-show="navtabs.alerts">
+      <div class="page-header">
+        <h2 style="padding-left: 20px">Alerts setup <small>({{ alerts.length }}/10)</small></h2>
+      </div>
+      <div ng-hide="alerts.length">
+        <p style="padding-left: 20px;">
+          No alerts configured yet.
+        </p>
+      </div>
+      <div class="alerts" ng-show="alerts.length">
+        <form class="form" role="form">
+          <div class="alert" ng-repeat="alert in alerts">
+            <div class="form-group col-lg-6">
+              <input class="form-control input-bigger input-lg" ng-model="alert.url" disabled>
+            </div>
+            <button class="btn btn-bigger btn-warning" type="button" ng-click="deleteAlert($index)">Delete</button>
           </div>
-          <button class="btn btn-bigger btn-warning" type="button" ng-click="deleteAlert($index)">Delete</button>
+        </form>
+      </div>
+      <hr>
+      <form class="form" role="form" ng-submit="addAlert(alertUrl)">
+        <div class="form-group col-lg-6">
+          <input ng-model="alertUrl" type="text" class="form-control input-bigger input-lg" placeholder="http://www.website.com">
         </div>
+        <button type="submit" class="btn btn-bigger btn-warning" >Add</button>
       </form>
     </div>
-    <hr>
-    <form class="form" role="form" ng-submit="addAlert(alertUrl)">
-      <div class="form-group col-lg-6">
-        <input ng-model="alertUrl" type="text" class="form-control input-bigger input-lg" placeholder="http://www.website.com">
-      </div>
-      <button type="submit" class="btn btn-bigger btn-warning" >Add</button>
-    </form>
+    <div ng-show="navtabs.subscription">
+      <div class="page-header">
+        <h2 style="padding-left: 20px">Subscription</h2>
+      </div>      
+    </div>
   </div>
 </section>
