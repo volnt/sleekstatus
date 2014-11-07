@@ -18,8 +18,8 @@ class Alert(object):
 
     @staticmethod
     def delete(email, url):
-        alert_sha = sha1(self.email+self.url).hexdigest()
-        email_sha = sha1(self.email).hexdigest()
+        alert_sha = sha1(email+url).hexdigest()
+        email_sha = sha1(email).hexdigest()
 
         alert = redis.hgetall("sl:alert:{}".format(alert_sha))
         return (alert and redis.srem("sl:alert:ids", alert_sha) and
@@ -56,3 +56,13 @@ def delete_alert():
         return make_response(jsonify({"success": "Alert has been removed successfully."}))
     else:
         return make_response(jsonify({"error": "Could not create alert"}), 400)
+
+@is_authenticated
+@app.route('/api/alert/get', methods=['POST'])
+def get_user_alerts():
+    alert_ids = list(Alert.get_user_alerts(request.json.get("email")))
+    if alert_ids is not None:
+        alerts = map(Alert.to_dict, map(Alert.from_sha, alert_ids))
+        return make_response(jsonify({"alerts": alerts}))
+    else:
+        return make_response(jsonify({"error": "Could not get user alerts"}), 400)

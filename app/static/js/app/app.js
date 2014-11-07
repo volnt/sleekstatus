@@ -63,12 +63,12 @@ app.factory('Auth', function($http) {
     localStorage.setItem('auth', JSON.stringify(auth));
   };
 
-  var load = function() {
+  var load = function(success, error) {
     auth = JSON.parse(localStorage.getItem('auth'));
     if (!auth) {
       logout();
     } else {
-      verify();
+      verify(success, error);
     }
   };
 

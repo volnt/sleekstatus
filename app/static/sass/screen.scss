@@ -14,6 +14,16 @@ body {
     margin: 0;
     padding: 0;
     font-family: sans-serif;
+    background: #f0f0f0;
+}
+
+.alerts-container {
+    padding: 20px;
+    background: white;
+}
+
+#dashboard {
+    margin-top: 50px;
 }
 
 .btn-bigger {
@@ -42,15 +52,45 @@ body {
     }
 }
 
+.navbar {
+    border-radius: 0 !important;
+}
+
 .navbar-fixed-top {
     border-radius: 5px;
 }
 
+
 .navbar-brand {
     font-weight: bold;
-    &:hover {
+}
+
+.navbar-default {
+    .navbar-brand {
         .orange {
             color: #bd7a1b;
+        }
+        &:hover {
+            .orange {
+                color: #f0ad4e;
+            }
+        }
+    }
+}
+
+.orange {
+    color: #f0ad4e;
+}
+
+.navbar-transparent {
+    .navbar-brand {
+        .orange {
+            color: #f0ad4e;
+        }
+        &:hover {
+            .orange {
+                color: #bd7a1b;
+            }
         }
     }
 }
@@ -63,10 +103,6 @@ body {
     padding: 20px;
 }
 
-.orange {
-    color: #f0ad4e;
-}
-
 .navbar-transparent {
     background-color: transparent;
     border-color: transparent;
@@ -76,6 +112,15 @@ body {
     .navbar-brand:hover {
         color: #ccc;
     }
+}
+
+p, h1, h2, h3, h4 {
+    color: #444;
+}
+
+h2 {
+    font-size: 36px;
+    font-weight: bold;
 }
 
 #promotion {
@@ -120,6 +165,7 @@ body {
 .input-group-addon:hover {
     background: #f3f3f3;
 }
+
 
 .space-1 { height: 10px; }
 .space-2 { height: 20px; }

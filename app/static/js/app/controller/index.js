@@ -18,5 +18,6 @@ app.controller("IndexCtrl", function($scope, $http, $routeParams, $location, Ale
     * Entry point of the controller.
     */
     $scope.Auth.load();
+    $(".navbar").removeClass("navbar-default").addClass("navbar-transparent");
   }();
 });

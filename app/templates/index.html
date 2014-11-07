@@ -15,7 +15,7 @@
       <button type="submit" class="btn btn-warning btn-cta">Start now</button>
     </form>
     <div ng-show="Auth.is_authenticated()">
-      <button type="button" class="btn btn-warning btn-cta" style="margin-right: 10px">Access dashboard</button>
+      <a href="#/dashboard" class="btn btn-warning btn-cta" style="margin-right: 10px">Access dashboard</a>
       <button type="button" class="btn btn-link" ng-click="Auth.logout()">Log out</button>
       </div>
   </section>
