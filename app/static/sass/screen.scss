@@ -48,6 +48,11 @@ body {
 
 .navbar-brand {
     font-weight: bold;
+    &:hover {
+        .orange {
+            color: #bd7a1b;
+        }
+    }
 }
 
 .form-register {
