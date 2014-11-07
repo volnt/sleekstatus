@@ -3,8 +3,10 @@
 </div>
 <div class="container landing">
   <section id="promotion">
-    <h2>Get an email as soon as your website crashes for <span class="orange">1$/mo</span>.</h2>
-    
+    <div class="promotion-header">
+      <h2>Monitor your website status for <span class="orange">1$/mo</span>.</h2>
+      <h3>We'll send you an email when it crashes.</h3>
+    </div>
     <form class="form form-register" role="form" ng-submit="login(email, password)" ng-show="!Auth.is_authenticated()">
       <div class="form-group">
         <input type="email" class="form-control input-bigger input-lg" id="input-email" placeholder="Email" ng-model="email">
