@@ -55,6 +55,11 @@ body {
     margin: auto;
     border: solid 1px white;
     border-radius: 10px;
+    padding: 20px;
+}
+
+.orange {
+    color: #f0ad4e;
 }
 
 .navbar-transparent {
@@ -90,6 +95,14 @@ body {
         color: black;
     }
     cursor: pointer;
+}
+
+.btn-link {
+    color: white;
+    &:hover {
+        color: #ccc;
+        text-decoration: none;
+    }
 }
 
 .input-group-addon {
