@@ -39,8 +39,8 @@ class Alert(object):
 
         return redis.smembers("sl:account:{}:alerts".format(sha))
 
-@is_authenticated
 @app.route('/api/alert/create', methods=['POST'])
+@is_authenticated
 def create_alert():
     alert = Alert(request.json.get("email"), request.json.get("url"))
 
@@ -49,16 +49,16 @@ def create_alert():
     else:
         return make_response(jsonify({"error": "Could not create alert"}), 400)
 
-@is_authenticated
 @app.route('/api/alert/delete', methods=['POST'])
+@is_authenticated
 def delete_alert():
     if Alert.delete(request.json.get("email"), request.json.get("url")):
         return make_response(jsonify({"success": "Alert has been removed successfully."}))
     else:
         return make_response(jsonify({"error": "Could not create alert"}), 400)
 
-@is_authenticated
 @app.route('/api/alert/get', methods=['POST'])
+@is_authenticated
 def get_user_alerts():
     alert_ids = list(Alert.get_user_alerts(request.json.get("email")))
     if alert_ids is not None:

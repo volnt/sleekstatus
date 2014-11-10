@@ -1,3 +1,4 @@
+from functools import wraps
 from app import app, redis
 from hashlib import sha1
 from flask import jsonify, make_response, abort, request
@@ -8,12 +9,13 @@ def is_authenticated(f):
 
     If he's not it'll throw an error 400.
     """
+    @wraps(f)
     def wrapped(*args, **kwargs):
         if not request.json:
-            return abort(400)
+            return abort(401)
         auth = request.json.get("auth")
         if not User.valid_auth(auth.get("email"), auth.get("password")):
-            return make_response(jsonify({'error': 'Authentication needed.'}), 400)
+            return make_response(jsonify({'error': 'Authentication needed.'}), 401)
         return f(*args, **kwargs)
     return wrapped
 
@@ -30,6 +32,8 @@ class User(object):
 
     @staticmethod
     def valid_auth(email, password):
+        if not email or not password:
+            return False
         sha = sha1(email).hexdigest()
         user_info = redis.hgetall("sl:account:{}".format(sha))
 
