@@ -76,10 +76,20 @@ body {
             }
         }
     }
+    ul.nav.navbar-nav li>a {
+        color: #ccc;
+        &:hover {
+            color: white;
+        }
+    }
 }
 
 .orange {
     color: #f0ad4e;
+}
+
+ul.nav.navbar-nav li>a {
+    font-weight: bold;
 }
 
 .navbar-transparent {
@@ -91,6 +101,12 @@ body {
             .orange {
                 color: #bd7a1b;
             }
+        }
+    }
+    ul.nav.navbar-nav li>a {
+        color: white;
+        &:hover {
+            color: #ccc;
         }
     }
 }

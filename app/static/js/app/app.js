@@ -26,6 +26,14 @@ app.config(function($routeProvider) {
     templateUrl: "dashboard.html",
     controller: "DashboardCtrl"
   })
+  .when("/about", {
+    templateUrl: "about.html",
+    controller: "AboutCtrl"
+  })
+  .when("/pricing", {
+    templateUrl: "pricing.html",
+    controller: "PricingCtrl"
+  })
   .otherwise({redirectTo: '/'});
 });
 
