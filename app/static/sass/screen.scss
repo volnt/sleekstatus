@@ -189,6 +189,36 @@ h2 {
     background: #f3f3f3;
 }
 
+.pricing-tab {
+    border: solid 1px black;
+    border-radius: 10px;
+    text-align: center;
+    margin-left: 20px;
+    margin-right: 20px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    .pricing-header {
+        h3 {
+            font-size: 28px;
+        }
+        .pricing-price {
+            font-size: 20px;
+            small {
+                font-size: 16px;
+            }
+        }
+    }
+    .pricing-highlight {
+        background: #cecefa;
+    }
+    .pricing-descr {
+    }
+    .pricing-footer {
+        border-top: solid 1px black;
+        padding-top: 20px;
+        margin-top: 20px;
+    }
+}
 
 .space-1 { height: 10px; }
 .space-2 { height: 20px; }
