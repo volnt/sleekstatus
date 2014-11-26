@@ -1,5 +1,3 @@
-__version__ = "0.1"
-
 from flask import Flask
 import redis
 
