@@ -9,8 +9,7 @@ app.controller("DashboardCtrl", function($scope, $http, $routeParams, $location,
   };
 
   $scope.getAlerts = function() {
-    var params = {"auth": $scope.Auth.get(), "email": $scope.Auth.get().email};
-    $http.post("/api/alert/get", params).success(function(response) {
+    $http.get("/api/alert").success(function(response) {
       $scope.alerts = response.alerts;
     }).error(function() {
       console.log("Error while fetching alerts.");

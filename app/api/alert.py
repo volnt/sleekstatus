@@ -57,10 +57,10 @@ def delete_alert():
     else:
         return make_response(jsonify({"error": "Could not create alert"}), 400)
 
-@app.route('/api/alert/get', methods=['POST'])
+@app.route('/api/alert')
 @is_authenticated
-def get_user_alerts():
-    alert_ids = list(Alert.get_user_alerts(request.json.get("email")))
+def get_user_alerts(user):
+    alert_ids = list(Alert.get_user_alerts(user.email))
     if alert_ids is not None:
         alerts = map(Alert.to_dict, map(Alert.from_sha, alert_ids))
         return make_response(jsonify({"alerts": alerts}))

@@ -11,12 +11,10 @@ def is_authenticated(f):
     """
     @wraps(f)
     def wrapped(*args, **kwargs):
-        if not request.json:
-            return abort(401)
         email, password = session.get("email"), session.get("password")
         if not User.valid_auth(email, password):
             return make_response(jsonify({'error': 'Authentication needed.'}), 401)
-        return f(*args, **kwargs)
+        return f(user=User(email, password), *args, **kwargs)
     return wrapped
 
 class User(object):
