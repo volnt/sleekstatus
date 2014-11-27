@@ -1,4 +1,4 @@
-var app = angular.module("app", ["ngRoute"]);
+var app = angular.module("app", ["ngRoute", "ngCookies"]);
 
 app.filter('safe', ['$sce', function($sce) {
   return (function(text) {
@@ -63,19 +63,28 @@ app.factory('Alert', function() {
   };
 });
 
-app.factory('Auth', function($http) {
+app.factory('Auth', function($http, $cookies) {
   var is_authenticated = false;
   var auth = {};
-
+  
   var save = function() {
-    localStorage.setItem('auth', JSON.stringify(auth));
+    if (!angular.isUndefined(auth.email) && 
+	!angular.isUndefined(auth.password)) {
+      $cookies.email = auth.email;
+      $cookies.password = auth.password;
+    }
   };
-
+  
   var load = function(success, error) {
-    auth = JSON.parse(localStorage.getItem('auth'));
-    if (!auth) {
+    var email = $cookies.email;
+    var password = $cookies.password;
+    if (angular.isUndefined(email) || angular.isUndefined(password)) {
       logout();
     } else {
+      auth = {
+	email: email,
+	password: password
+      };
       verify(success, error);
     }
   };
