@@ -4,8 +4,8 @@
 <div class="container landing">
   <section id="promotion">
     <div class="promotion-header">
-      <h2>Monitor your website status for <span class="orange">1$/mo</span>.</h2>
-      <h3>We'll send you an email when it goes down.</h3>
+      <h2><span class="orange">Sleek</span> website status monitoring.</h2>
+      <h3>Get an email as soon as your website goes down.</h3>
     </div>
     <form class="form form-register" role="form" ng-submit="login(email, password)" ng-show="!Auth.is_authenticated()">
       <div class="form-group">
@@ -20,5 +20,24 @@
       <a href="#/dashboard" class="btn btn-warning btn-cta" style="margin-right: 10px">Access dashboard</a>
       <button type="button" class="btn btn-link" ng-click="Auth.logout()">Log out</button>
       </div>
+  </section>
+  <section id="advantages">
+    <div class="row">
+      <div class="advantage col-lg-4 col-sm-4 col-xs-7">
+	<i class="glyphicon glyphicon-heart"></i>
+	<h3 class="orange">Simple</h3>
+	<p>Enter your website URL and it's done. We will send you an email as soon as it goes down.</p>
+      </div>
+      <div class="advantage col-lg-4 col-sm-4 col-xs-7">
+	<i class="glyphicon glyphicon-stats"></i>
+	<h3 class="orange">Cheap</h3>
+	<p>From 1.99$ for 10 websites to 9.99$ for a unlimited amount of website, it fits any budget.</p>
+      </div>
+      <div class="advantage col-lg-4 col-sm-4 col-xs-7">
+	<i class="glyphicon glyphicon-thumbs-up"></i>
+	<h3 class="orange">Just works</h3>
+	<p>Set up once and forget about it. You will receive an email as soon as your website goes down.</p>
+      </div>
+    </div>
   </section>
 </div>

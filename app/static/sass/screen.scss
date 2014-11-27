@@ -130,10 +130,6 @@ ul.nav.navbar-nav li>a {
     }
 }
 
-p, h1, h2, h3, h4 {
-    color: #444;
-}
-
 h2 {
     font-size: 36px;
     font-weight: bold;
@@ -141,26 +137,53 @@ h2 {
 
 #promotion {
     text-align: center;
-    margin-top: 20%;
+    margin-top: 10%;
+    @media screen and (min-width: 770px) {
+	margin-bottom: 7%;
+    }
     .promotion-header {
         font-weight: bold;
-        margin-bottom: 100px;
+        margin-bottom: 7%;
         h2 {
             font-size: 60px;
             margin-bottom: 20px;
         }
         h3 {
             font-size: 26px;
-            color: #ccc;
         }
+    }
+}
+
+#advantages {
+    text-align: center;
+    h3 {
+        font-size: 26px;
+    }
+    p {
+	text-align: justify;
+    }
+    .glyphicon {
+	font-size: 30px;
+    }
+    .advantage {
+	padding: 10px;
+	@media screen and (min-width: 770px) {
+	    h3 {
+		margin-top: 10px;
+		margin-bottom: 10px;
+	    }
+	}
+    }
+    @media screen and (max-width: 769px) {
+	.advantage {
+	    margin-left: 20.85%;
+	}
     }
 }
 
 .landing {
     min-height: 100%;
-    p, h1, h2, h3, h4 {
-        color: white;
-    }
+    color: white;
 }
 
 .btn-icon {
