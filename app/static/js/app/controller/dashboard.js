@@ -11,8 +11,11 @@ app.controller("DashboardCtrl", function($scope, $http, $routeParams, $location,
   $scope.getAlerts = function() {
     $http.get("/api/alert").success(function(response) {
       $scope.alerts = response.alerts;
-    }).error(function() {
+    }).error(function(response) {
       console.log("Error while fetching alerts.");
+      if (response.code == 401) {
+	Auth.load();
+      }
     });
   };
 
@@ -23,17 +26,23 @@ app.controller("DashboardCtrl", function($scope, $http, $routeParams, $location,
     var params = {"auth": $scope.Auth.get(), "email": $scope.Auth.get().email, "url" : url};
     $http.post("/api/alert/create", params).success(function(response) {
       $scope.alerts.push(response);
-    }).error(function() {
+    }).error(function(response) {
       console.log("Error while fetching alerts.");
+      if (response.code == 401) {
+	Auth.load();
+      }
     });
   };
 
   $scope.deleteAlert = function(index) {
-    var params = {"auth": $scope.Auth.get(), "email": $scope.alerts[index].email, "url" : $scope.alerts[index].url};
-    $http.post("/api/alert/delete", params).success(function(response) {
+    $http.delete("/api/alert/"+$scope.alerts[index].sha).success(function(response) {
       $scope.alerts.splice(index, 1);
-    }).error(function() {
+    }).error(function(response) {
       console.log("Error while fetching alerts.");
+      console.log(response);
+      if (response.code == 401) {
+	Auth.load();
+      }
     });
   };
 
