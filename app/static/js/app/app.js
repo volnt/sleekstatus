@@ -80,6 +80,9 @@ app.factory('Auth', function($http, $location) {
     var password = sessionStorage.password;
     if (angular.isUndefined(email) || angular.isUndefined(password)) {
       logout();
+      if (typeof error == 'function') {
+	error();
+      }
     } else {
       verify(email, password, success, error);
     }
