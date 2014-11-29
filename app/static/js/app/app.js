@@ -124,9 +124,8 @@ app.factory('Auth', function($http, $location) {
     });
   };
   
-  var set_user = function(email, password) {
-      user.email = email;
-      user.password = password;
+  var set_attribut = function(key, value) {
+      user[key] = value;
   };
 
   var get_user = function() {
@@ -136,7 +135,7 @@ app.factory('Auth', function($http, $location) {
   return {
     is_authenticated: function() { return is_authenticated; },
     get: get_user,
-    set: set_user,
+    set: set_attribut,
     login: login,
     logout: logout,
     load: load,
