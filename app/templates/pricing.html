@@ -38,7 +38,7 @@
         1 check / minute
       </div>
     </div>
-  <form class="form form-register" role="form" ng-submit="login(email, password)" ng-show="!Auth.is_authenticated()">
+  <form class="form form-register" role="form" ng-submit="Auth.login(email, password)" ng-show="!Auth.is_authenticated()">
     <div class="form-group">
       <input type="email" class="form-control input-bigger input-lg" id="input-email" placeholder="Email" ng-model="email">
     </div>

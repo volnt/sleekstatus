@@ -63,15 +63,15 @@ app.factory('Alert', function() {
   };
 });
 
-app.factory('Auth', function($http) {
+app.factory('Auth', function($http, $location) {
   var is_authenticated = false;
-  var auth = {};
+  var user = {};
   
   var save = function() {
-    if (!angular.isUndefined(auth.email) && 
-	!angular.isUndefined(auth.password)) {
-      sessionStorage.email = auth.email;
-      sessionStorage.password = auth.password;
+    if (!angular.isUndefined(user.email) && 
+	!angular.isUndefined(user.password)) {
+      sessionStorage.email = user.email;
+      sessionStorage.password = user.password;
     }
   };
   
@@ -81,41 +81,63 @@ app.factory('Auth', function($http) {
     if (angular.isUndefined(email) || angular.isUndefined(password)) {
       logout();
     } else {
-      is_authenticated = true;
-      auth = {
-	email: email,
-	password: password
-      };
-      verify(success, error);
+      verify(email, password, success, error);
     }
+  };
+
+  var login = function(email, password) {
+    if (!email || !password) return ;
+    var hashlib = new Rusha();
+
+    verify(email, hashlib.digest(password), function() {
+      $location.url("/dashboard");
+    }, function() {
+      console.log("Error when logging in.");
+    });
+
   };
 
   var logout = function() {
     is_authenticated = false;
-    auth = {};
+    user = {};
     sessionStorage.removeItem("email");
     sessionStorage.removeItem("password");
+    $location.url("/");
   };
 
-  var verify = function(success, error) {
-    $http.post('/api/user/login', auth).success(function(response) {
+  var verify = function(email, password, success, error) {
+    $http.post('/api/user/login', {
+      email: email, 
+      password: password
+    }).success(function(response) {
       is_authenticated = true;
+      user = response;
       save();
-      if (!angular.isUndefined(success)) {
+      if (typeof success == "function") {
         success();
       }
     }).error(function() {
       logout();
-      if (!angular.isUndefined(error)) {
+      if (typeof error == "function") {
         error();
       }
     });
   };
+  
+  var set_user = function(email, password) {
+      user.email = email;
+      user.password = password;
+  };
+
+  var get_user = function() {
+    return user;
+  };
 
   return {
     is_authenticated: function() { return is_authenticated; },
-    get: function() { return auth; },
-    set: function(email, password) { auth = {"email": email, "password": password}; },
+    get: get_user,
+    set: set_user,
+    login: login,
     logout: logout,
     load: load,
     save: save,

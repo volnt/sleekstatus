@@ -66,6 +66,7 @@ class User(object):
     def to_dict(self):
         return {
             "email": self.email, 
+            "password": self.password,
             "plan": self.plan._id if self.plan else None,
             "customer_token": self.customer_token,
             "subscription_end": self.subscription_end

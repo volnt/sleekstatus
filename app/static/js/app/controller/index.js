@@ -2,16 +2,6 @@ app.controller("IndexCtrl", function($scope, $http, $routeParams, $location, Ale
 
   $scope.Alert = Alert;
   $scope.Auth  = Auth;
-  $scope.hashlib = new Rusha();
-
-  $scope.login = function(email, password) {
-    Auth.set(email, $scope.hashlib.digest(password));
-    Auth.verify(function() {
-      $location.url("/dashboard");
-    }, function() {
-      console.log("Error when logging in.");
-    });
-  }
 
   $scope.main = function() {
     /*
