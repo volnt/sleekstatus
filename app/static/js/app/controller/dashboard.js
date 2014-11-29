@@ -23,7 +23,7 @@ app.controller("DashboardCtrl", function($scope, $http, $routeParams, $location,
     $http.post("/api/alert/create", params).success(function(response) {
       $scope.alerts.push(response);
     }).error(function(response) {
-      console.log("Error while fetching alerts.");
+      console.log("Error : " + response.error);
       if (response.code == 401) {
 	Auth.load();
       }

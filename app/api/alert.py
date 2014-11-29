@@ -44,10 +44,13 @@ class Alert(object):
 def create_alert(user):
     alert = Alert(request.json.get("email"), request.json.get("url"))
 
-    if alert.save():
+    if (not user.plan or 
+        len(Alert.get_user_alerts(user.email)) >= user.plan.alert_number):
+        return make_response(jsonify({"error": "Too many alert already created."}), 400)
+    elif alert.save():
         return make_response(jsonify(alert.to_dict()))
     else:
-        return make_response(jsonify({"error": "Could not create alert"}), 400)
+        return make_response(jsonify({"error": "Could not create alert."}), 400)
 
 @app.route('/api/alert/<sha>', methods=['DELETE'])
 @is_authenticated
