@@ -1,6 +1,7 @@
-app.controller("MainCtrl", function($scope, $http, $routeParams, $location, Alert) {
+app.controller("MainCtrl", function($scope, $http, $routeParams, $location, Alert, Auth) {
 
   $scope.Alert = Alert;
+  $scope.Auth = Auth;
 
   $scope.main = function() {
     /*
