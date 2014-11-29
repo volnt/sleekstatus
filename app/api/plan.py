@@ -28,7 +28,7 @@ class Plan(object):
 
     def to_dict(self):
         return {
-            "_id": self._id,
+            "id": self._id,
             "name": self.name,
             "amount": self.amount,
             "interval": self.interval,
@@ -54,7 +54,7 @@ def plan_subscribe(_id, user):
     plan = Plan.from_id(_id)
 
     if plan and plan.subscribe(user):
-        return make_response(jsonify({"success": "Subscription success."}), 200)
+        return make_response(jsonify(plan.to_dict()), 200)
     else:
         return make_response(jsonify({"error": "Could not subscribe user."}), 400)
         

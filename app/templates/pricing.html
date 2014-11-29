@@ -15,8 +15,8 @@
         </div>
 	<div ng-show="Auth.is_authenticated()">
 	  <hr>
-          <button class="btn btn-warning" ng-click="subscribe({id: 'basic'})" ng-show="Auth.get().plan != 'basic'">Subscribe</button>
-          <button class="btn btn-warning" ng-click="unsubscribe({id: 'basic'})" ng-show="Auth.get().plan == 'basic'">Unsubscribe</button>
+          <button class="btn btn-warning" ng-click="subscribe({id: 'basic'})" ng-show="Auth.get().plan.id != 'basic'">Subscribe</button>
+          <button class="btn btn-warning" ng-click="unsubscribe({id: 'basic'})" ng-show="Auth.get().plan.id == 'basic'">Unsubscribe</button>
 	</div>
       </div>
       <div class="col-lg-4 col-sm-4 col-xs-12 pricing pricing-highlight">
@@ -30,8 +30,8 @@
         </div>
 	<div ng-show="Auth.is_authenticated()">
 	  <hr>
-          <button class="btn btn-default" ng-click="subscribe({id: 'big'})" ng-show="Auth.get().plan != 'big'">Subscribe</button>
-          <button class="btn btn-default" ng-click="unsubscribe({id: 'big'})" ng-show="Auth.get().plan == 'big'">Unsubscribe</button>
+          <button class="btn btn-default" ng-click="subscribe({id: 'big'})" ng-show="Auth.get().plan.id != 'big'">Subscribe</button>
+          <button class="btn btn-default" ng-click="unsubscribe({id: 'big'})" ng-show="Auth.get().plan.id == 'big'">Unsubscribe</button>
 	</div>
       </div>
       <div class="col-lg-4 col-sm-4 col-xs-12 pricing">
@@ -45,8 +45,8 @@
         </div>
 	<div ng-show="Auth.is_authenticated()">
 	  <hr>
-          <button class="btn btn-warning" ng-click="subscribe({id: 'unlimited'})" ng-show="Auth.get().plan != 'unlimited'">Subscribe</button>
-          <button class="btn btn-warning" ng-click="unsubscribe({id: 'unlimited'})" ng-show="Auth.get().plan == 'unlimited'">Unsubscribe</button>
+          <button class="btn btn-warning" ng-click="subscribe({id: 'unlimited'})" ng-show="Auth.get().plan.id != 'unlimited'">Subscribe</button>
+          <button class="btn btn-warning" ng-click="unsubscribe({id: 'unlimited'})" ng-show="Auth.get().plan.id == 'unlimited'">Unsubscribe</button>
 	</div>
       </div>
       <div class="col-lg-12 col-xs-12 pricing-footer">

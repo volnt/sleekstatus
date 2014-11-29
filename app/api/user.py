@@ -26,8 +26,10 @@ class User(object):
 
     def save(self):
         sha = sha1(self.email).hexdigest()
+        infos = self.to_dict()
+        infos["plan"] = infos["plan"]["id"] if infos["plan"] else None
 
-        return redis.hmset("sl:account:{}".format(sha), self.to_dict())
+        return redis.hmset("sl:account:{}".format(sha), infos)
 
     def register(self):
         sha = sha1(self.email).hexdigest()
@@ -67,7 +69,7 @@ class User(object):
         return {
             "email": self.email, 
             "password": self.password,
-            "plan": self.plan._id if self.plan else None,
+            "plan": self.plan.to_dict() if self.plan else None,
             "customer_token": self.customer_token,
             "subscription_end": self.subscription_end
         }

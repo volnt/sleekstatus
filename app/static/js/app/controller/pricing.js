@@ -10,8 +10,7 @@ app.controller("PricingCtrl", function($scope, $http, $routeParams, $location, A
       token: token
     };
     $http.post("/api/plan/"+plan.id+"/subscribe", params).success(function(response) {
-      console.log("Success : " + response.success);
-      Auth.set('plan', plan.id);
+      Auth.set('plan', response);
     }).error(function(response) {
       console.log("Error : " + response.error);
     });
@@ -25,6 +24,7 @@ app.controller("PricingCtrl", function($scope, $http, $routeParams, $location, A
     };
     $http.post("/api/plan/"+plan.id+"/unsubscribe", params).success(function(response) {
       console.log("Success : " + response.success);
+      Auth.set('plan', null);
     }).error(function(response) {
       console.log("Error : " + response.error);
     });
