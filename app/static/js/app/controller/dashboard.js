@@ -3,10 +3,6 @@ app.controller("DashboardCtrl", function($scope, $http, $routeParams, $location,
   $scope.Alert = Alert;
   $scope.Auth = Auth;
   $scope.alerts = [];
-  $scope.navtabs = {
-    "alerts": true,
-    "subscription": false
-  };
 
   $scope.getAlerts = function() {
     $http.get("/api/alert").success(function(response) {
@@ -43,29 +39,6 @@ app.controller("DashboardCtrl", function($scope, $http, $routeParams, $location,
       if (response.code == 401) {
 	Auth.load();
       }
-    });
-  };
-
-  $scope.toggleAlerts = function() {
-    $scope.navtabs.alerts = true;
-    $scope.navtabs.subscription = false;
-  };
-
-  $scope.toggleSubscription = function() {
-    $scope.navtabs.alerts = false;
-    $scope.navtabs.subscription = true;
-  };
-
-  $scope.subscribe = function(plan) {
-    // Get card token using Stripe.js
-    var token = "";
-    var params = {
-      token: token
-    };
-    $http.post("/api/plan/"+plan.id+"/subscribe", params).success(function(response) {
-      console.log("Success : " + response.success);
-    }).error(function(response) {
-      console.log("Error : " + response.error);
     });
   };
 
