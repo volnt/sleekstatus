@@ -11,7 +11,7 @@
     <div class="alerts" ng-show="alerts.length">
       <form class="form" role="form">
         <div class="alert" ng-repeat="alert in alerts">
-          <div class="form-group col-lg-6">
+          <div class="form-group col-lg-6 col-sm-10 col-xs-8">
             <input class="form-control input-bigger input-lg" ng-model="alert.url" disabled>
           </div>
           <button class="btn btn-bigger btn-warning" type="button" ng-click="deleteAlert($index)">Delete</button>
@@ -20,7 +20,7 @@
     </div>
     <hr>
     <form class="form" role="form" ng-submit="addAlert(alertUrl)">
-      <div class="form-group col-lg-6">
+      <div class="form-group col-lg-6 col-xs-10 col-xs-8">
         <input ng-model="alertUrl" type="text" class="form-control input-bigger input-lg" placeholder="http://www.website.com">
       </div>
       <button type="submit" class="btn btn-bigger btn-warning" >Add</button>
