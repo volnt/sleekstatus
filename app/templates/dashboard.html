@@ -1,7 +1,7 @@
 <section id="dashboard">
   <div class="container alerts-container">
     <div class="page-header">
-      <h2 style="padding-left: 20px">Alerts setup <small>({{ alerts.length }}/10)</small></h2>
+      <h2 style="padding-left: 20px">Alerts setup <small>({{ alerts.length }}/{{ Auth.get().plan.alert_number || 0 }})</small></h2>
     </div>
     <div ng-hide="alerts.length">
       <p style="padding-left: 20px;">
