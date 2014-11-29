@@ -1,21 +1,6 @@
-from functools import wraps
 from app import app, redis
 from hashlib import sha1
 from flask import jsonify, make_response, abort, request, session
-
-def is_authenticated(f):
-    """
-    Decorator checking if the user is connected.
-
-    If he's not it'll throw an error 400.
-    """
-    @wraps(f)
-    def wrapped(*args, **kwargs):
-        email, password = session.get("email"), session.get("password")
-        if not User.valid_auth(email, password):
-            return make_response(jsonify({'error': 'Authentication needed.'}), 401)
-        return f(user=User(email, password), *args, **kwargs)
-    return wrapped
 
 class User(object):
     def __init__(self, email, password):

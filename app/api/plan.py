@@ -1,6 +1,6 @@
 from app import app
-from user import is_authenticated
 from flask import jsonify, make_response, abort, request
+from app.utils import is_authenticated
 
 class Plan(object):
     def __init__(self, _id, name, amount, interval="month", currency="usd"):

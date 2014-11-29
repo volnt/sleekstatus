@@ -1,7 +1,7 @@
 from app import app, redis
 from hashlib import sha1
 from flask import jsonify, make_response, abort, request
-from user import is_authenticated
+from app.utils import is_authenticated
 
 class Alert(object):
     def __init__(self, email, url, sha=None):
