@@ -102,7 +102,6 @@ app.factory('Auth', function($http, $location) {
     user = {};
     sessionStorage.removeItem("email");
     sessionStorage.removeItem("password");
-    $location.url("/");
   };
 
   var verify = function(email, password, success, error) {
@@ -118,6 +117,7 @@ app.factory('Auth', function($http, $location) {
       }
     }).error(function() {
       logout();
+      $location.url("/");
       if (typeof error == "function") {
         error();
       }
