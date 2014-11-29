@@ -56,6 +56,20 @@ app.controller("DashboardCtrl", function($scope, $http, $routeParams, $location,
     $scope.navtabs.subscription = true;
   };
 
+  $scope.subscribe = function(plan) {
+    // Get card token using Stripe.js
+    var token = "";
+    var params = {
+      plan_id: plan.id,
+      token: token
+    };
+    $http.post("/api/plan/subscribe", params).success(function(response) {
+      console.log("Success : " + response.success);
+    }).error(function(response) {
+      console.log("Error : " + response.error);
+    });
+  };
+
   $scope.main = function() {
     /*
     * Entry point of the controller.
