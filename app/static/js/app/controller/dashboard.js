@@ -60,10 +60,9 @@ app.controller("DashboardCtrl", function($scope, $http, $routeParams, $location,
     // Get card token using Stripe.js
     var token = "";
     var params = {
-      plan_id: plan.id,
       token: token
     };
-    $http.post("/api/plan/subscribe", params).success(function(response) {
+    $http.post("/api/plan/"+plan.id+"/subscribe", params).success(function(response) {
       console.log("Success : " + response.success);
     }).error(function(response) {
       console.log("Error : " + response.error);

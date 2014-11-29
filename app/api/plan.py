@@ -31,12 +31,23 @@ class Plan(object):
             "currency": self.currency
         }
 
-@app.route('/api/plan/subscribe', methods=['POST'])
+@app.route('/api/plan/<_id>')
+def plan_get(_id):
+    plan = Plan.from_id(_id)
+
+    if plan:
+        return make_response(jsonify(plan.to_dict()), 200)
+    else:
+        return make_response(jsonify({"error": "Could not find plan '{}'"
+                                      .format(_id)}))
+    
+
+@app.route('/api/plan/<_id>/subscribe', methods=['POST'])
 @is_authenticated
-def plan_subscribe(user):
+def plan_subscribe(_id, user):
     if not request.json:
         return abort(400)
-    plan = Plan.from_id(request.json.get("plan_id"))
+    plan = Plan.from_id(_id)
 
     if plan and plan.subscribe(user):
         return make_response(jsonify({"success": "Subscription success."}), 200)
@@ -44,12 +55,12 @@ def plan_subscribe(user):
         return make_response(jsonify({"error": "Could not subscribe user."}), 400)
         
 
-@app.route('/api/plan/unsubscribe', methods=['POST'])
+@app.route('/api/plan/<_id>/unsubscribe', methods=['POST'])
 @is_authenticated
-def plan_unsubscribe(user):
+def plan_unsubscribe(_id, user):
     if not request.json:
         return abort(400)
-    plan = Plan.from_id(request.json.get("plan_id"))
+    plan = Plan.from_id(_id)
 
     if plan and plan.unsubscribe(user):
         return make_response(jsonify(plan.to_dict()), 200)

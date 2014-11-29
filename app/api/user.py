@@ -1,4 +1,5 @@
 from app import app, redis
+from app.api import Plan
 from hashlib import sha1
 from flask import jsonify, make_response, abort, request, session
 
@@ -7,11 +8,28 @@ class User(object):
         self.email = email
         self.password = password
 
+        self._set_user_info(password)
+
+    def _set_user_info(self, password):
+        sha = sha1(self.email).hexdigest()
+        user_info = redis.hgetall("sl:account:{}".format(sha))
+
+        if not user_info or not user_info.get("password") == password:
+            user_info = {}
+
+        self.plan = Plan.from_id(user_info.get("plan"))
+        self.customer_token = user_info.get("customer_token")
+        self.subscription_end = user_info.get("subscription_end")
+
+    def save(self):
+        sha = sha1(self.email).hexdigest()
+
+        return redis.hmset("sl:account:{}".format(sha), self.to_dict())
+
     def register(self):
         sha = sha1(self.email).hexdigest()
 
-        return (redis.sadd("sl:account:ids", sha) and
-                redis.hmset("sl:account:{}".format(sha), self.to_dict()))
+        return redis.sadd("sl:account:ids", sha) and self.save()
 
     @staticmethod
     def valid_auth(email, password):
@@ -43,7 +61,13 @@ class User(object):
             return None
 
     def to_dict(self):
-        return {"email": self.email, "password": self.password }
+        return {
+            "email": self.email, 
+            # "password": self.password,
+            "plan": self.plan._id if self.plan else None,
+            "customer_token": self.customer_token,
+            "subscription_end": self.subscription_end
+        }
 
 @app.route('/api/user/login', methods=['POST'])
 def user_login():
