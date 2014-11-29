@@ -1,5 +1,6 @@
 from app import app, redis
 from app.api import Plan
+from app.utils import str_to_none
 from hashlib import sha1
 from flask import jsonify, make_response, abort, request, session
 
@@ -19,7 +20,9 @@ class User(object):
 
         self.plan = Plan.from_id(user_info.get("plan"))
         self.customer_token = user_info.get("customer_token")
+        self.customer_token = str_to_none(self.customer_token)
         self.subscription_end = user_info.get("subscription_end")
+        self.subscription_end = str_to_none(self.subscription_end)
 
     def save(self):
         sha = sha1(self.email).hexdigest()
@@ -63,7 +66,6 @@ class User(object):
     def to_dict(self):
         return {
             "email": self.email, 
-            # "password": self.password,
             "plan": self.plan._id if self.plan else None,
             "customer_token": self.customer_token,
             "subscription_end": self.subscription_end

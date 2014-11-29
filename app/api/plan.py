@@ -11,9 +11,13 @@ class Plan(object):
         self.currency = currency
 
     def subscribe(self, user):
+        user.plan = self
+        user.save()
         return True
 
     def unsubscribe(self, user):
+        user.plan = None
+        user.save()
         return True
 
     @classmethod
