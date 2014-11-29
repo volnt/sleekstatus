@@ -3,12 +3,13 @@ from flask import jsonify, make_response, abort, request
 from app.utils import is_authenticated
 
 class Plan(object):
-    def __init__(self, _id, name, amount, interval="month", currency="usd"):
+    def __init__(self, _id, name, price, alert_number, interval="month", currency="usd"):
         self._id = _id
         self.name = name
-        self.amount = amount
+        self.price = price
         self.interval = interval
         self.currency = currency
+        self.alert_number = alert_number
 
     def subscribe(self, user):
         user.plan = self
@@ -30,9 +31,10 @@ class Plan(object):
         return {
             "id": self._id,
             "name": self.name,
-            "amount": self.amount,
+            "price": self.price,
             "interval": self.interval,
-            "currency": self.currency
+            "currency": self.currency,
+            "alert_number": self.alert_number
         }
 
 @app.route('/api/plan/<_id>')
@@ -67,30 +69,33 @@ def plan_unsubscribe(_id, user):
     plan = Plan.from_id(_id)
 
     if plan and plan.unsubscribe(user):
-        return make_response(jsonify(plan.to_dict()), 200)
+        return make_response(jsonify({"success": "Unsubscribed user successfully."}), 200)
     else:
-        return make_response(jsonify({"error": "Could not subscribe user."}), 400)
+        return make_response(jsonify({"error": "Could not unsubscribe user."}), 400)
     
 plans = {
     "basic": {
         "_id": "basic",
         "name": "Basic Plan",
-        "amount": "1.99",
+        "price": "1.99",
         "interval": "month",
-        "currency": "usd"
+        "currency": "usd",
+        "alert_number": 3,
     }, 
     "big": {
         "_id": "big",
         "name": "Big Plan",
-        "amount": "4.99",
+        "price": "4.99",
         "interval": "month",
-        "currency": "usd"
+        "currency": "usd",
+        "alert_number": 20,
     }, 
     "unlimited": {
         "_id": "unlimited",
         "name": "Unlimited Plan",
-        "amount": "19.99",
+        "price": "19.99",
         "interval": "month",
-        "currency": "usd"
+        "currency": "usd",
+        "alert_number": 1000,
     }
 }

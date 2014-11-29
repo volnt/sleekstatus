@@ -3,6 +3,8 @@ app.controller("PricingCtrl", function($scope, $http, $routeParams, $location, A
   $scope.Alert = Alert;
   $scope.Auth  = Auth;
 
+  $scope.plans = {};
+
   $scope.subscribe = function(plan) {
     // TODO : Get card token using Stripe.js
     var token = "";
@@ -30,11 +32,25 @@ app.controller("PricingCtrl", function($scope, $http, $routeParams, $location, A
     });
   };
 
+  $scope.fetchPlans = function() {
+    var fetchPlan = function(id) {
+      $http.get("/api/plan/"+id).success(function(response) {
+	$scope.plans[id] = response;
+      }).error(function(response) {
+	console.log("Error : "+response.error);
+      });
+    };
+    fetchPlan("basic");
+    fetchPlan("big");
+    fetchPlan("unlimited");
+  };
+
   $scope.main = function() {
     /*
      * Entry point of the controller.
      */
     $scope.Auth.load();
+    $scope.fetchPlans();
     $(".navbar").addClass("navbar-default").removeClass("navbar-transparent");
   }();
 });
