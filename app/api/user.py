@@ -1,4 +1,4 @@
-from app import app, redis, rns
+from app import app, redis
 from app.api import Plan
 from app.utils import str_to_none
 from hashlib import sha1
@@ -13,7 +13,7 @@ class User(object):
 
     def _set_user_info(self, password):
         sha = sha1(self.email).hexdigest()
-        user_info = redis.hgetall(rns+"account:{}".format(sha))
+        user_info = redis.hgetall("sl:account:{}".format(sha))
 
         if not user_info or not user_info.get("password") == password:
             user_info = {}
@@ -28,23 +28,23 @@ class User(object):
         infos = self.to_dict()
         infos["plan"] = infos["plan"]["id"] if infos["plan"] else None
 
-        return redis.hmset(rns+"account:{}".format(sha), infos)
+        return bool(redis.hmset("sl:account:{}".format(sha), infos))
 
     def register(self):
         sha = sha1(self.email).hexdigest()
 
         # TODO : send welcome email (celery)
 
-        return redis.sadd(rns+"account:ids", sha) and self.save()
+        return bool(redis.sadd("sl:account:ids", sha) and self.save())
 
     @staticmethod
     def valid_auth(email, password):
         if not email or not password:
             return False
         sha = sha1(email).hexdigest()
-        user_info = redis.hgetall(rns+"account:{}".format(sha))
+        user_info = redis.hgetall("sl:account:{}".format(sha))
 
-        return user_info and user_info.get("password") == password
+        return bool(user_info and user_info.get("password") == password)
 
     @classmethod
     def login(cls, email, password):
@@ -58,10 +58,8 @@ class User(object):
         sha = sha1(email).hexdigest()
         user = cls(email, password)
 
-        if cls.valid_auth(email, password):
+        if User.valid_auth(email, password) or user.register():
             session["email"], session["password"] = email, password
-            return user
-        elif user.register():
             return user
         else:
             return None

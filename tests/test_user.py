@@ -1,56 +1,120 @@
-from app import redis, app
+from app import redis, app, mode
+from app.api import Plan, User
 from flask import session, request
 from mock import patch, MagicMock
 from hashlib import sha1
 import json
-import app.api.alert as alert
-import app.api.user as user
-rns = "test:"
-user.rns = rns
 app.testing = True
+
+assert mode == "TEST"
 
 class TestUserAPI(object):
     def setup(self):
-        self.u = user.User("user@host.ndd", "password")
-        self.sha = sha1(self.u.email).hexdigest()
+        redis.flushdb()
+        self.user = User("user@host.ndd", "password")
+        self.sha = sha1(self.user.email).hexdigest()
         self.client = app.test_client()
 
-    def clear_user(self):
-        for key in self.u.to_dict():
-            redis.hdel(rns+"account:{}".format(self.sha), key)
-        redis.srem(rns+"account:ids", self.sha)
-
     def test_user_register(self):
-        self.clear_user()
-
+        """
+        It should register the user when the email is not in database.
+        """
         res = self.client.post("/api/user/login", data=json.dumps({
-            "email": self.u.email,
-            "password": self.u.password
+            "email": self.user.email,
+            "password": self.user.password
         }), content_type="application/json")
 
         assert res.status_code == 200
-        assert json.loads(res.data) == self.u.to_dict()
+        assert json.loads(res.data) == self.user.to_dict()
 
     def test_user_login(self):
-        self.clear_user()
-
-        assert self.u.register() is True
+        """
+        It should login the user when the email is in database and the 
+        password match the one stored in database.
+        """
+        assert self.user.register() is True
         res = self.client.post("/api/user/login", data=json.dumps({
-            "email": self.u.email,
-            "password": self.u.password
+            "email": self.user.email,
+            "password": self.user.password
         }), content_type="application/json")
 
         assert res.status_code == 200
-        assert json.loads(res.data) == self.u.to_dict()        
+        assert json.loads(res.data) == self.user.to_dict()        
 
     def test_user_bad_credentials(self):
-        self.clear_user()
-
-        assert self.u.register() is True
+        """
+        It should return an error 401 when the user submits the wrong 
+        credentials.
+        """
+        assert self.user.register() is True
         res = self.client.post("/api/user/login", data=json.dumps({
-            "email": self.u.email,
+            "email": self.user.email,
             "password": "wrong"
         }), content_type="application/json")
 
         assert res.status_code == 401
         assert json.loads(res.data)["error"]
+
+class TestUser(object):
+    def setup(self):
+        redis.flushdb()
+        self.user = User("user@host.ndd", "password")
+        self.sha = sha1(self.user.email).hexdigest()
+
+    @patch.object(Plan, "from_id")
+    def test_init_user(self, from_id):
+        """
+        It should fill the plan, customer_token, subscription_token and 
+        subscription_end attributs with what's stored in database when 
+        instantiating a User object.
+        """
+        self.user.plan = MagicMock()
+        self.user.customer_token = "customer_token"
+        self.user.subscription_token = "subscription_token"
+        self.user.subscription_end = "subscription_end"
+
+        assert self.user.register() is True
+        user = User(self.user.email, self.user.password)
+        from_id.assert_called_once_with(str(self.user.plan.to_dict()["id"]))
+        assert user.plan == from_id.return_value
+        
+
+    def test_save(self):
+        """
+        It should save the user infos in database when calling the User.save
+        method.
+        """
+        pass
+
+    def test_register(self):
+        """
+        It should add a user id to the account list in database and save the
+        user to database when calling the User.register method.
+        """
+        pass
+
+    def test_valid_auth(self):
+        """
+        It should return True if the credentials are valid when calling the 
+        User.valid_auth staticmethod.
+        """
+        pass
+
+    def test_invalid_auth(self):
+        """
+        It should return False if the credentials are invalid when calling the
+        User.valid_auth staticmethod.
+        """
+        pass
+
+    def test_login_existing_user(self):
+        """
+        It should login an existing user when calling the User.login classmethod.
+        """
+        pass
+    
+    def test_login_new_user(self):
+        """
+        It should register and login a new user when calling the User.login classmethod.
+        """
+        pass
