@@ -16,7 +16,7 @@
 	<div ng-show="Auth.is_authenticated()">
 	  <hr>
           <button class="btn btn-warning" data-toggle="modal" data-target=".modal-basic" ng-show="Auth.get().plan.id != 'basic'">Subscribe</button>
-          <button class="btn btn-warning" ng-click="unsubscribe({id: 'basic'})" ng-show="Auth.get().plan.id == 'basic'">Unsubscribe</button>
+          <button class="btn btn-warning" ng-click="unsubscribe(plans.basic)" ng-disabled="plans.basic.loader.unsubscribe" ng-show="Auth.get().plan.id == 'basic'">Unsubscribe</button>
 	  <div class="modal fade modal-basic" tabindex="-1" role="dialog" aria-labelledby="Basic subscription form" aria-hidden="true">
 	    <div class="modal-dialog modal-sm">
 	      <div class="modal-content row">
@@ -42,7 +42,8 @@
 		  </div>
 		  <div class="modal-footer col-xs-12 ">
 		    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-		    <button type="submit" class="btn btn-warning">Subscribe {{ plans.basic.price }}$/mo</button>
+		    <button type="submit" class="btn btn-warning" ng-disabled="plans.basic.loader.subscribe">Subscribe {{ plans.basic.price }}$/mo</button> 
+		    <img class="modal-loader" src="/static/img/loader.gif" ng-show="plans.basic.loader.subscribe" />
 		  </div>
 		</form>
 	      </div>
@@ -62,7 +63,7 @@
 	<div ng-show="Auth.is_authenticated()">
 	  <hr>
           <button class="btn btn-default" data-toggle="modal" data-target=".modal-big" ng-show="Auth.get().plan.id != 'big'">Subscribe</button>
-          <button class="btn btn-default" ng-click="unsubscribe({id: 'big'})" ng-show="Auth.get().plan.id == 'big'">Unsubscribe</button>
+          <button class="btn btn-default" ng-click="unsubscribe(plans.big)" ng-disabled="plans.big.loader.unsubscribe" ng-show="Auth.get().plan.id == 'big'">Unsubscribe</button>
 	  <div class="modal fade modal-big" tabindex="-1" role="dialog" aria-labelledby="Big subscription form" aria-hidden="true">
 	    <div class="modal-dialog modal-sm">
 	      <div class="modal-content row">
@@ -88,7 +89,8 @@
 		  </div>
 		  <div class="modal-footer col-xs-12 ">
 		    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-		    <button type="submit" class="btn btn-warning">Subscribe {{ plans.big.price }}$/mo</button>
+		    <button type="submit" class="btn btn-warning" ng-disabled="plans.big.loader.subscribe">Subscribe {{ plans.big.price }}$/mo</button> 
+		    <img class="modal-loader" src="/static/img/loader.gif" ng-show="plans.big.loader.subscribe" />
 		  </div>
 		</form>
 	      </div>
@@ -108,7 +110,7 @@
 	<div ng-show="Auth.is_authenticated()">
 	  <hr>
           <button class="btn btn-warning" data-toggle="modal" data-target=".modal-unlimited" ng-show="Auth.get().plan.id != 'unlimited'">Subscribe</button>
-          <button class="btn btn-warning" ng-click="unsubscribe({id: 'unlimited'})" ng-show="Auth.get().plan.id == 'unlimited'">Unsubscribe</button>
+          <button class="btn btn-warning" ng-click="unsubscribe(plans.unlimited)" ng-disabled="plans.unlimited.loader.unsubscribe" ng-show="Auth.get().plan.id == 'unlimited'">Unsubscribe</button>
 
 	  <div class="modal fade modal-unlimited" tabindex="-1" role="dialog" aria-labelledby="Unlimited subscription form" aria-hidden="true">
 	    <div class="modal-dialog modal-sm">
@@ -135,7 +137,8 @@
 		  </div>
 		  <div class="modal-footer col-xs-12 ">
 		    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-		    <button type="submit" class="btn btn-warning">Subscribe {{ plans.unlimited.price }}$/mo</button>
+		    <button type="submit" class="btn btn-warning" ng-disabled="plans.unlimited.loader.subscribe">Subscribe {{ plans.unlimited.price }}$/mo</button>
+		    <img class="modal-loader" src="/static/img/loader.gif" ng-show="plans.unlimited.loader.subscribe" />
 		  </div>
 		</form>
 	      </div>

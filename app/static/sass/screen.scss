@@ -229,6 +229,13 @@ h2 {
 	position: relative;
 	float: left;
     }
+    .modal-footer {
+	.modal-loader {
+	    position: relative;
+	    float: right;
+	    margin-left: 5px;
+	}
+    }
 }
 
 .input-group-addon {
