@@ -120,7 +120,7 @@ plans = {
     }, 
     "unlimited": {
         "_id": "unlimited",
-        "name": "Unlimited Plan",
+        "name": "Huge Plan",
         "price": "19.99",
         "interval": "month",
         "currency": "usd",
