@@ -34,7 +34,7 @@ class User(object):
         sha = sha1(self.email).hexdigest()
 
         # TODO : send welcome email (celery)
-        
+
         return redis.sadd(rns+"account:ids", sha) and self.save()
 
     @staticmethod
@@ -79,10 +79,10 @@ class User(object):
 @app.route('/api/user/login', methods=['POST'])
 def user_login():
     if not request.json:
-        return abort(400)
+        return make_response(jsonify({"error": "Incorrect parameters."}), 400)
     user = User.login(request.json.get("email"), request.json.get("password"))
 
     if user:
         return make_response(jsonify(user.to_dict()))
     else:
-        return make_response(jsonify({"error": "Incorrect password."}), 400)
+        return make_response(jsonify({"error": "Incorrect password."}), 401)
