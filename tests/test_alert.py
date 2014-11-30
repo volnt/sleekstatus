@@ -23,8 +23,12 @@ class TestAlert(object):
         assert self.alert.save() is True
 
         assert redis.sismember("sl:alert:ids", self.alert.alert_sha) is True
-        assert redis.sismember("sl:account:{}:alerts".format(self.sha), self.alert.alert_sha) is True
-        assert redis.hgetall("sl:alert:{}".format(self.alert.alert_sha)) == self.alert.to_dict()
+        assert redis.sismember(
+            "sl:account:{}:alerts".format(self.sha), self.alert.alert_sha
+        ) is True
+        assert redis.hgetall(
+            "sl:alert:{}".format(self.alert.alert_sha)
+        ) == self.alert.to_dict()
 
     def test_delete(self):
         """
@@ -44,8 +48,8 @@ class TestAlert(object):
         Alert.from_sha should return an Alert object.
         """
         assert self.alert.save() is True
-
-        assert Alert.from_sha(self.alert.alert_sha).to_dict() == self.alert.to_dict()
+        alert = Alert.from_sha(self.alert.alert_sha)
+        assert alert.to_dict() == self.alert.to_dict()
 
     def test_get_user_alerts(self):
         """
