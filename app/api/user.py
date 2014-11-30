@@ -59,7 +59,6 @@ class User(object):
         user = cls(email, password)
 
         if User.valid_auth(email, password) or user.register():
-            session["email"], session["password"] = email, password
             return user
         else:
             return None
@@ -70,7 +69,7 @@ class User(object):
             "password": self.password,
             "plan": self.plan.to_dict() if self.plan else None,
             "customer_token": self.customer_token,
-            "subcription_token": self.subscription_token,
+            "subscription_token": self.subscription_token,
             "subscription_end": self.subscription_end
         }
 
@@ -81,6 +80,7 @@ def user_login():
     user = User.login(request.json.get("email"), request.json.get("password"))
 
     if user:
+        session["email"], session["password"] = user.email, user.password
         return make_response(jsonify(user.to_dict()))
     else:
         return make_response(jsonify({"error": "Incorrect password."}), 401)

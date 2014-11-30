@@ -74,9 +74,13 @@ class TestUser(object):
         self.user.subscription_end = "subscription_end"
 
         assert self.user.register() is True
+
         user = User(self.user.email, self.user.password)
         from_id.assert_called_once_with(str(self.user.plan.to_dict()["id"]))
         assert user.plan == from_id.return_value
+        assert user.customer_token == self.user.customer_token
+        assert user.subscription_token == self.user.subscription_token
+        assert user.subscription_end == self.user.subscription_end
         
 
     def test_save(self):
@@ -84,37 +88,45 @@ class TestUser(object):
         It should save the user infos in database when calling the User.save
         method.
         """
-        pass
+        assert self.user.save() is True
+        assert redis.hgetall("sl:account:{}".format(self.sha))
 
     def test_register(self):
         """
         It should add a user id to the account list in database and save the
         user to database when calling the User.register method.
         """
-        pass
+        assert self.user.register() is True
+        assert redis.sismember("sl:account:ids", self.sha) is True
+        assert redis.hgetall("sl:account:{}".format(self.sha))
 
     def test_valid_auth(self):
         """
         It should return True if the credentials are valid when calling the 
         User.valid_auth staticmethod.
         """
-        pass
+        assert self.user.register() is True
+        assert User.valid_auth(self.user.email, self.user.password) is True
 
     def test_invalid_auth(self):
         """
         It should return False if the credentials are invalid when calling the
         User.valid_auth staticmethod.
         """
-        pass
+        assert self.user.register() is True
+        assert User.valid_auth(self.user.email, "wrong") is False
 
     def test_login_existing_user(self):
         """
         It should login an existing user when calling the User.login classmethod.
         """
-        pass
+        assert self.user.register() is True
+        assert User.login(self.user.email, self.user.password) is not None
     
     def test_login_new_user(self):
         """
         It should register and login a new user when calling the User.login classmethod.
         """
-        pass
+        assert User.login(self.user.email, self.user.password) is not None
+        assert redis.sismember("sl:account:ids", self.sha) is True
+        assert redis.hgetall("sl:account:{}".format(self.sha))
