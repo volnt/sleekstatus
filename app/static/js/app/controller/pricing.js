@@ -6,25 +6,34 @@ app.controller("PricingCtrl", function($scope, $http, $routeParams, $location, A
   $scope.plans = {};
 
   $scope.subscribe = function(plan) {
-    // TODO : Get card token using Stripe.js
-    var token = "";
-    var params = {
-      token: token
-    };
-    $http.post("/api/plan/"+plan.id+"/subscribe", params).success(function(response) {
-      Auth.set('plan', response);
-    }).error(function(response) {
-      console.log("Error : " + response.error);
+    var exp_array = $scope.form.expiration.split('/');
+    if (exp_array.length != 2) {
+      console.log("Error : expiration date format is invalid.");
+    }
+
+    Stripe.card.createToken({
+      number: $scope.form.number,
+      cvc: $scope.form.cvc,
+      exp_month: exp_array[0],
+      exp_year: exp_array[1]
+    }, function(status, response) {
+      if (response.error) {
+	console.log("Error : " + response.error.message);
+      } else {
+	var token = response.id;
+	var params = { token: token };
+	$http.post("/api/plan/"+plan.id, params).success(function(response) {
+	  Auth.set('plan', response);
+	}).error(function(response) {
+	  console.log("Error : " + response.error);
+	});
+      }
     });
   };
 
   $scope.unsubscribe = function(plan) {
     // TODO : Get card token using Stripe.js
-    var token = "";
-    var params = {
-      token: token
-    };
-    $http.post("/api/plan/"+plan.id+"/unsubscribe", params).success(function(response) {
+    $http.delete("/api/plan/"+plan.id).success(function(response) {
       console.log("Success : " + response.success);
       Auth.set('plan', null);
     }).error(function(response) {

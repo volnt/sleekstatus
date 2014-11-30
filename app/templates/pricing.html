@@ -15,8 +15,39 @@
         </div>
 	<div ng-show="Auth.is_authenticated()">
 	  <hr>
-          <button class="btn btn-warning" ng-click="subscribe({id: 'basic'})" ng-show="Auth.get().plan.id != 'basic'">Subscribe</button>
+          <button class="btn btn-warning" data-toggle="modal" data-target=".modal-basic" ng-show="Auth.get().plan.id != 'basic'">Subscribe</button>
           <button class="btn btn-warning" ng-click="unsubscribe({id: 'basic'})" ng-show="Auth.get().plan.id == 'basic'">Unsubscribe</button>
+	  <div class="modal fade modal-basic" tabindex="-1" role="dialog" aria-labelledby="Basic subscription form" aria-hidden="true">
+	    <div class="modal-dialog modal-sm">
+	      <div class="modal-content row">
+		<div class="modal-header">
+		  <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+		  <h4 class="modal-title">{{ plans.basic.name }}</h4>
+		  <div class="modal-email">
+		    {{ Auth.get().email }}
+		  </div>
+		</div>
+		<form class="form" role="form" ng-submit="subscribe(plans.basic)">
+		  <div class="modal-body">
+		    <span class="payment-errors"></span>
+		    <div class="form-group col-xs-12">
+		      <input class="form-control" type="text" size="20" ng-model="form.number" placeholder="Card Number">
+		    </div>
+		    <div class="form-group col-xs-6 no-padding-right">
+		      <input class="form-control" type="text" size="3" ng-model="form.cvc" placeholder="CVC">
+		    </div>
+		    <div class="form-group col-xs-6 no-padding-left">
+		      <input class="form-control" type="text" size="5" ng-model="form.expiration" placeholder="MM/YY">
+		    </div>
+		  </div>
+		  <div class="modal-footer col-xs-12 ">
+		    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		    <button type="submit" class="btn btn-warning">Subscribe {{ plans.basic.price }}$/mo</button>
+		  </div>
+		</form>
+	      </div>
+	    </div>
+	  </div>
 	</div>
       </div>
       <div class="col-lg-4 col-sm-4 col-xs-12 pricing pricing-highlight">
@@ -30,8 +61,39 @@
         </div>
 	<div ng-show="Auth.is_authenticated()">
 	  <hr>
-          <button class="btn btn-default" ng-click="subscribe({id: 'big'})" ng-show="Auth.get().plan.id != 'big'">Subscribe</button>
+          <button class="btn btn-default" data-toggle="modal" data-target=".modal-big" ng-show="Auth.get().plan.id != 'big'">Subscribe</button>
           <button class="btn btn-default" ng-click="unsubscribe({id: 'big'})" ng-show="Auth.get().plan.id == 'big'">Unsubscribe</button>
+	  <div class="modal fade modal-big" tabindex="-1" role="dialog" aria-labelledby="Big subscription form" aria-hidden="true">
+	    <div class="modal-dialog modal-sm">
+	      <div class="modal-content row">
+		<div class="modal-header">
+		  <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+		  <h4 class="modal-title">{{ plans.big.name }}</h4>
+		  <div class="modal-email">
+		    {{ Auth.get().email }}
+		  </div>
+		</div>
+		<form class="form" role="form" ng-submit="subscribe(plans.big)">
+		  <div class="modal-body">
+		    <span class="payment-errors"></span>
+		    <div class="form-group col-xs-12">
+		      <input class="form-control" type="text" size="20" ng-model="form.number" placeholder="Card Number">
+		    </div>
+		    <div class="form-group col-xs-6 no-padding-right">
+		      <input class="form-control" type="text" size="3" ng-model="form.cvc" placeholder="CVC">
+		    </div>
+		    <div class="form-group col-xs-6 no-padding-left">
+		      <input class="form-control" type="text" size="5" ng-model="form.expiration" placeholder="MM/YY">
+		    </div>
+		  </div>
+		  <div class="modal-footer col-xs-12 ">
+		    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		    <button type="submit" class="btn btn-warning">Subscribe {{ plans.big.price }}$/mo</button>
+		  </div>
+		</form>
+	      </div>
+	    </div>
+	  </div>
 	</div>
       </div>
       <div class="col-lg-4 col-sm-4 col-xs-12 pricing">
@@ -45,8 +107,40 @@
         </div>
 	<div ng-show="Auth.is_authenticated()">
 	  <hr>
-          <button class="btn btn-warning" ng-click="subscribe({id: 'unlimited'})" ng-show="Auth.get().plan.id != 'unlimited'">Subscribe</button>
+          <button class="btn btn-warning" data-toggle="modal" data-target=".modal-unlimited" ng-show="Auth.get().plan.id != 'unlimited'">Subscribe</button>
           <button class="btn btn-warning" ng-click="unsubscribe({id: 'unlimited'})" ng-show="Auth.get().plan.id == 'unlimited'">Unsubscribe</button>
+
+	  <div class="modal fade modal-unlimited" tabindex="-1" role="dialog" aria-labelledby="Unlimited subscription form" aria-hidden="true">
+	    <div class="modal-dialog modal-sm">
+	      <div class="modal-content row">
+		<div class="modal-header">
+		  <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+		  <h4 class="modal-title">{{ plans.unlimited.name }}</h4>
+		  <div class="modal-email">
+		    {{ Auth.get().email }}
+		  </div>
+		</div>
+		<form class="form" role="form" ng-submit="subscribe(plans.unlimited)">
+		  <div class="modal-body">
+		    <span class="payment-errors"></span>
+		    <div class="form-group col-xs-12">
+		      <input class="form-control" type="text" size="20" ng-model="form.number" placeholder="Card Number">
+		    </div>
+		    <div class="form-group col-xs-6 no-padding-right">
+		      <input class="form-control" type="text" size="3" ng-model="form.cvc" placeholder="CVC">
+		    </div>
+		    <div class="form-group col-xs-6 no-padding-left">
+		      <input class="form-control" type="text" size="5" ng-model="form.expiration" placeholder="MM/YY">
+		    </div>
+		  </div>
+		  <div class="modal-footer col-xs-12 ">
+		    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		    <button type="submit" class="btn btn-warning">Subscribe {{ plans.unlimited.price }}$/mo</button>
+		  </div>
+		</form>
+	      </div>
+	    </div>
+	  </div>
 	</div>
       </div>
       <div class="col-lg-12 col-xs-12 pricing-footer">

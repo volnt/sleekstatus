@@ -208,6 +208,29 @@ h2 {
     }
 }
 
+.modal {
+    .modal-header {
+	padding: 0;
+	margin-top: 15px;
+	button {
+	    margin-right: 15px;
+	}
+	.modal-title {
+	    margin-left: 15px;
+	    margin-bottom: 10px;
+	}
+	.modal-email {
+	    font-size: 12px;
+	    background: #f0ad4e;
+	    padding: 5px;
+	}
+    }
+    .modal-body {
+	position: relative;
+	float: left;
+    }
+}
+
 .input-group-addon {
     cursor: pointer;
     a {
@@ -221,6 +244,14 @@ h2 {
 
 .no-padding {
     padding: 0 !important;
+}
+
+.no-padding-right {
+    padding-right: 0 !important;
+}
+
+.no-padding-left {
+    padding-left: 0 !important;
 }
 
 .pricing-tab {

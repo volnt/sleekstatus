@@ -19,10 +19,9 @@ class User(object):
             user_info = {}
 
         self.plan = Plan.from_id(user_info.get("plan"))
-        self.customer_token = user_info.get("customer_token")
-        self.customer_token = str_to_none(self.customer_token)
-        self.subscription_end = user_info.get("subscription_end")
-        self.subscription_end = str_to_none(self.subscription_end)
+        self.customer_token = str_to_none(user_info.get("customer_token"))
+        self.subscription_token = str_to_none(user_info.get("subscription_token"))
+        self.subscription_end = str_to_none(user_info.get("subscription_end"))
 
     def save(self):
         sha = sha1(self.email).hexdigest()
@@ -71,6 +70,7 @@ class User(object):
             "password": self.password,
             "plan": self.plan.to_dict() if self.plan else None,
             "customer_token": self.customer_token,
+            "subcription_token": self.subscription_token,
             "subscription_end": self.subscription_end
         }
 

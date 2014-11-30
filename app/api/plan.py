@@ -1,4 +1,4 @@
-from app import app
+from app import app, stripe
 from flask import jsonify, make_response, abort, request
 from app.utils import is_authenticated
 
@@ -11,15 +11,46 @@ class Plan(object):
         self.currency = currency
         self.alert_number = alert_number
 
-    def subscribe(self, user):
+    def subscribe(self, user, token):
         user.plan = self
-        user.save()
-        return True
+        if not user.customer_token:
+            try:
+                customer = stripe.Customer.create(
+                    card=token, 
+                    plan=self._id, 
+                    email=user.email
+                )
+            except Exception as e:
+                print "Error : " + e
+                return False
+            else:
+                user.customer_token = customer.id
+                user.subscription_token = customer.subscriptions.data[0]["id"]
+        else:
+            customer = stripe.Customer.retrieve(user.customer_token)
+            customer.card = token
+            if user.subscription_token:
+                subscription = customer.subscriptions.retrieve(
+                    user.subscription_token
+                )
+                subscription.plan = self._id
+                subscription.save()
+            elif customer.subscriptions.total_count >= 1:
+                subscription = customer.subscriptions.retrieve(
+                    customer.subscriptions.data[0]["id"]
+                )
+                subscription.plan = self._id
+                subscription.save()
+            else:
+                subscription = customer.subscriptions.create(plan=self._id)
+        return user.save()
 
     def unsubscribe(self, user):
+        customer = stripe.Customer.retrieve(user.customer_token) 
+        user.subscription_token = customer.subscriptions.data[0]["id"]
+        subscription = customer.subscriptions.retrieve(user.subscription_token).delete()
         user.plan = None
-        user.save()
-        return True
+        return user.save()
 
     @classmethod
     def from_id(cls, _id):
@@ -46,26 +77,23 @@ def plan_get(_id):
     else:
         return make_response(jsonify({"error": "Could not find plan '{}'"
                                       .format(_id)}))
-    
 
-@app.route('/api/plan/<_id>/subscribe', methods=['POST'])
+@app.route('/api/plan/<_id>', methods=['POST'])
 @is_authenticated
 def plan_subscribe(_id, user):
     if not request.json:
         return abort(400)
     plan = Plan.from_id(_id)
 
-    if plan and plan.subscribe(user):
+    if plan and plan.subscribe(user, request.json.get("token")):
         return make_response(jsonify(plan.to_dict()), 200)
     else:
         return make_response(jsonify({"error": "Could not subscribe user."}), 400)
         
 
-@app.route('/api/plan/<_id>/unsubscribe', methods=['POST'])
+@app.route('/api/plan/<_id>', methods=['DELETE'])
 @is_authenticated
 def plan_unsubscribe(_id, user):
-    if not request.json:
-        return abort(400)
     plan = Plan.from_id(_id)
 
     if plan and plan.unsubscribe(user):
