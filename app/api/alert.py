@@ -1,4 +1,4 @@
-from app import app, redis
+from app import app, redis, rns
 from hashlib import sha1
 from flask import jsonify, make_response, abort, request
 from app.utils import is_authenticated
@@ -12,19 +12,20 @@ class Alert(object):
     def save(self):
         email_sha = sha1(self.email).hexdigest()
 
-        return (redis.sadd("sl:alert:ids", self.alert_sha) and
-                redis.sadd("sl:account:{}:alerts".format(email_sha), self.alert_sha) and
-                redis.hmset("sl:alert:{}".format(self.alert_sha), self.to_dict()))
+        return (redis.sadd(rns+"alert:ids", self.alert_sha) and
+                redis.sadd(rns+"account:{}:alerts".format(email_sha), self.alert_sha) and
+                redis.hmset(rns+"alert:{}".format(self.alert_sha), self.to_dict()))
 
     @staticmethod
     def delete(alert_sha):
-        alert = redis.hgetall("sl:alert:{}".format(alert_sha))
-        return (alert and redis.srem("sl:alert:ids", alert_sha) and
-                redis.srem("sl:account:{}:alerts".format(sha1(alert["email"]).hexdigest()), alert_sha))
+        alert = redis.hgetall(rns+"alert:{}".format(alert_sha))
+    
+        return (alert and redis.srem(rns+"alert:ids", alert_sha) and
+                redis.srem(rns+"account:{}:alerts".format(sha1(alert["email"]).hexdigest()), alert_sha))
 
     @classmethod
     def from_sha(cls, sha):
-        return cls(**redis.hgetall("sl:alert:{}".format(sha)))
+        return cls(**redis.hgetall(rns+"alert:{}".format(sha)))
 
     def to_dict(self):
         return {
@@ -37,11 +38,13 @@ class Alert(object):
     def get_user_alerts(email):
         sha = sha1(email).hexdigest()
 
-        return redis.smembers("sl:account:{}:alerts".format(sha))
+        return redis.smembers(rns+"account:{}:alerts".format(sha))
 
 @app.route('/api/alert/create', methods=['POST'])
 @is_authenticated
 def create_alert(user):
+    if not request.json:
+        return make_response(jsonify({"error": "Could not create alert."}), 400)
     alert = Alert(request.json.get("email"), request.json.get("url"))
 
     if (not user.plan or 

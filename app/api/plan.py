@@ -26,6 +26,8 @@ class Plan(object):
             else:
                 user.customer_token = customer.id
                 user.subscription_token = customer.subscriptions.data[0]["id"]
+
+                # TODO : send thank you email
         else:
             customer = stripe.Customer.retrieve(user.customer_token)
             customer.card = token
@@ -43,6 +45,7 @@ class Plan(object):
                 subscription.save()
             else:
                 subscription = customer.subscriptions.create(plan=self._id)
+
         return user.save()
 
     def unsubscribe(self, user):
@@ -50,6 +53,9 @@ class Plan(object):
         user.subscription_token = customer.subscriptions.data[0]["id"]
         subscription = customer.subscriptions.retrieve(user.subscription_token).delete()
         user.plan = None
+
+        # TODO : send good bye email
+
         return user.save()
 
     @classmethod
