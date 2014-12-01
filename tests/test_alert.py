@@ -76,7 +76,7 @@ class TestAlertAPI(object):
         """
         It should delete an alert for the current user.
         """
-        assert self.alert.save() is True
+        self.alert.save()
 
         with self.client.session_transaction() as session:
             res = self.client.post("/api/user/login", data=json.dumps({
@@ -102,7 +102,7 @@ class TestAlertAPI(object):
         """
         It should return all the current user's alerts.
         """
-        assert self.alert.save() is True
+        self.alert.save()
 
         with self.client.session_transaction() as session:
             res = self.client.post("/api/user/login", data=json.dumps({
@@ -127,7 +127,7 @@ class TestAlert(object):
         'account:{account_id}:alerts'.
         It should also save the attributes in 'alert:{alert_id}' as a dict.
         """
-        assert self.alert.save() is True
+        self.alert.save()
 
         assert redis.sismember("sl:alert:ids", self.alert.sha) is True
         assert redis.sismember(
@@ -142,8 +142,8 @@ class TestAlert(object):
         Alert.delete should remove the `alert_id` from 'alert:ids' and 
         'account:{account_id}:alerts'.
         """
-        assert self.alert.save() is True
-        assert Alert.delete(self.alert.sha) is True
+        self.alert.save()
+        Alert.delete(self.alert.sha)
         assert redis.sismember("sl:alert:ids", self.alert.sha) is False
         assert redis.sismember(
             "sl:account:{}:alerts".format(self.sha), 
@@ -154,7 +154,7 @@ class TestAlert(object):
         """
         Alert.from_sha should return an Alert object.
         """
-        assert self.alert.save() is True
+        self.alert.save()
         alert = Alert.from_sha(self.alert.sha)
         assert alert.to_dict() == self.alert.to_dict()
 
@@ -167,7 +167,7 @@ class TestAlert(object):
                Alert("user@host.ndd", "http://host.ndd/path2"),
                Alert("user@host.ndd", "http://host.ndd/path3")]
 
-        assert map(Alert.save, als) == [True, True, True]
+        map(Alert.save, als)
 
         assert Alert.get_user_alerts("user@host.ndd") == set([
             als[0].sha,

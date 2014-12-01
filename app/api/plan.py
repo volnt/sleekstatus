@@ -5,7 +5,7 @@ Contains the Plan class and the associated API endpoints.
 """
 from app import app, stripe
 from app import SleekException, catch_sleekexception
-from flask import jsonify, make_response, abort, request
+from flask import jsonify, make_response, request
 from app.utils import is_authenticated
 
 
@@ -62,8 +62,7 @@ class Plan(object):
                 user.subscription_token = subscription.id
             else:
                 subscription = customer.subscriptions.create(plan=self._id)
-
-        return user.save()
+        user.save()
 
     @staticmethod
     def unsubscribe(user):
@@ -75,7 +74,7 @@ class Plan(object):
         customer.subscriptions.retrieve(user.subscription_token).delete()
         user.plan = None
 
-        return user.save()
+        user.save()
 
     @classmethod
     def from_id(cls, _id):
@@ -84,7 +83,7 @@ class Plan(object):
         """
         if _id in PLANS:
             return cls(**PLANS[_id])
-        return None
+        raise SleekException("Could not find plan '{}'".format(_id), 404)
 
     def to_dict(self):
         """
@@ -108,14 +107,12 @@ def plan_get(_id):
     """
     plan = Plan.from_id(_id)
 
-    if plan:
-        return make_response(jsonify(plan.to_dict()), 200)
-    else:
-        raise SleekException("Could not find plan '{}'".format(_id), 404)
+    return make_response(jsonify(plan.to_dict()), 200)
+
 
 @app.route('/api/plan/<_id>', methods=['POST'])
-@is_authenticated
 @catch_sleekexception
+@is_authenticated
 def plan_subscribe(user, _id):
     """
     API endpoint subscribing the current user to the plan with the given _id.
@@ -124,14 +121,13 @@ def plan_subscribe(user, _id):
         raise SleekException("Could not subscribe user.")
     plan = Plan.from_id(_id)
 
-    if plan and plan.subscribe(user, request.json.get("token")):
-        return make_response(jsonify(plan.to_dict()), 200)
-    else:
-        raise SleekException("Could not subscribe user.")
+    plan.subscribe(user, request.json.get("token"))
+    return make_response(jsonify(plan.to_dict()), 200)
+
 
 @app.route('/api/plan/<_id>', methods=['DELETE'])
-@is_authenticated
 @catch_sleekexception
+@is_authenticated
 def plan_unsubscribe(user, _id):
     """
     API endpoint unsubscribing the current user from the plan wth the given
@@ -139,12 +135,10 @@ def plan_unsubscribe(user, _id):
     """
     plan = Plan.from_id(_id)
 
-    if plan and plan.unsubscribe(user):
-        return make_response(jsonify({
-            "success": "Unsubscribed user successfully."
-        }), 200)
-    else:
-        raise SleekException("Could not unsubscribe user.")
+    plan.unsubscribe(user)
+    return make_response(jsonify({
+        "success": "Unsubscribed user successfully."
+    }), 200)
 
 PLANS = {
     "basic": {

@@ -30,11 +30,14 @@ class Alert(object):
         """
         email_sha = sha1(self.email).hexdigest()
 
-        return bool(
+        saved = bool(
             redis.sadd("sl:alert:ids", self.sha) and
             redis.sadd("sl:account:{}:alerts".format(email_sha), self.sha) and
             redis.hmset("sl:alert:{}".format(self.sha), self.to_dict())
         )
+
+        if not saved:
+            raise SleekException("Could not save current alert.")
 
     @staticmethod
     def delete(alert_sha):
@@ -44,10 +47,13 @@ class Alert(object):
         alert = redis.hgetall("sl:alert:{}".format(alert_sha))
         sha = sha1(alert["email"]).hexdigest()
 
-        return bool(
+        removed = bool(
             alert and redis.srem("sl:alert:ids", alert_sha) and
             redis.srem("sl:account:{}:alerts".format(sha), alert_sha)
         )
+
+        if not removed:
+            raise SleekException("Could not delete alert.")
 
     @classmethod
     def from_sha(cls, sha):
@@ -77,8 +83,8 @@ class Alert(object):
 
 
 @app.route('/api/alert', methods=['POST'])
-@is_authenticated
 @catch_sleekexception
+@is_authenticated
 def create_alert(user):
     """
     API endpoint creating an alert from an email and an url.
@@ -89,27 +95,25 @@ def create_alert(user):
     user_alerts = Alert.get_user_alerts(user.email)
     if not user.plan or len(user_alerts) >= user.plan.alert_number:
         raise SleekException("Too many alert already created.")
-    elif alert.save():
-        return make_response(jsonify(alert.to_dict()))
-    else:
-        raise SleekException("Could not create alert.")
+    alert.save()
+    return make_response(jsonify(alert.to_dict()))
+
 
 @app.route('/api/alert/<sha>', methods=['DELETE'])
-@is_authenticated
 @catch_sleekexception
+@is_authenticated
 def delete_alert(_, sha):
     """
     API endpoint deleting an alert from an email and an url.
     """
-    if Alert.delete(sha):
-        return make_response(jsonify({
-            "success": "Alert has been removed successfully."
-        }))
-    else:
-        raise SleekException("Could not delete alert.")
+    Alert.delete(sha)
+    return make_response(jsonify({
+        "success": "Alert has been removed successfully."
+    }))
 
 
 @app.route('/api/alert')
+@catch_sleekexception
 @is_authenticated
 def get_user_alerts(user):
     """

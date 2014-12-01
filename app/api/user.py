@@ -23,10 +23,15 @@ class User(object):
         """
         self.email = email
         self.password = password
+        self.plan = None
+        self.customer_token = None
+        self.subscription_token = None
+        self.susbcription_end = None
 
-        self._set_user_info(password)
+        if email and password:
+            self._set_user_info()
 
-    def _set_user_info(self, password):
+    def _set_user_info(self):
         """
         Fetch and set current user infos based on the informations stored
         in the database.
@@ -34,10 +39,14 @@ class User(object):
         sha = sha1(self.email).hexdigest()
         user_info = redis.hgetall("sl:account:{}".format(sha))
 
-        if type(user_info) != dict or user_info.get("password") != password:
+        if (type(user_info) != dict or
+                user_info.get("password") != self.password):
             user_info = {}
 
-        self.plan = Plan.from_id(user_info.get("plan"))
+        try:
+            self.plan = Plan.from_id(user_info.get("plan"))
+        except SleekException:
+            self.plan = None
         self.customer_token = str_to_none(
             user_info.get("customer_token")
         )
@@ -56,15 +65,21 @@ class User(object):
         infos = self.to_dict()
         infos["plan"] = infos["plan"]["id"] if infos["plan"] else None
 
-        return bool(redis.hmset("sl:account:{}".format(sha), infos))
+        if not redis.hmset("sl:account:{}".format(sha), infos):
+            raise SleekException("Could not save current user.", 401)
 
     def register(self):
         """
         Register and save the current user to database.
         """
-        sha = sha1(self.email).hexdigest()
+        try:
+            sha = sha1(self.email).hexdigest()
+        except TypeError:
+            raise SleekException("Could not register user.", 401)
 
-        return bool(redis.sadd("sl:account:ids", sha) and self.save())
+        if not redis.sadd("sl:account:ids", sha):
+            raise SleekException("Could not register new user.", 401)
+        self.save()
 
     @staticmethod
     def valid_auth(email, password):
@@ -93,10 +108,9 @@ class User(object):
         """
         user = cls(email, password)
 
-        if User.valid_auth(email, password) or user.register():
-            return user
-        else:
-            return None
+        if not User.valid_auth(email, password):
+            user.register()
+        return user
 
     def to_dict(self):
         """
@@ -122,8 +136,5 @@ def user_login():
         raise SleekException("Could not login.")
     user = User.login(request.json.get("email"), request.json.get("password"))
 
-    if user:
-        session["email"], session["password"] = user.email, user.password
-        return make_response(jsonify(user.to_dict()))
-    else:
-        raise SleekException("Incorrect password.", 401)
+    session["email"], session["password"] = user.email, user.password
+    return make_response(jsonify(user.to_dict()))

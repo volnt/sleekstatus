@@ -115,7 +115,7 @@ class TestPlan(object):
         the user is not yet a customer.
         """
 
-        assert self.plan.subscribe(self.user, self.token)  is True
+        self.plan.subscribe(self.user, self.token)
         assert self.user.customer_token is not None
         assert self.user.subscription_token is not None
         customer = stripe.Customer.retrieve(self.user.customer_token)
@@ -138,7 +138,7 @@ class TestPlan(object):
         self.user.customer_token = customer.id
 
         assert customer.subscriptions.total_count == 1
-        assert self.plan.subscribe(self.user, self.token) is True
+        self.plan.subscribe(self.user, self.token)
         assert self.user.subscription_token is not None
         customer = stripe.Customer.retrieve(customer.id)
         assert customer.subscriptions.total_count == 1
@@ -160,7 +160,7 @@ class TestPlan(object):
         self.user.customer_token = customer.id
 
         assert customer.subscriptions.total_count == 0
-        assert self.plan.subscribe(self.user, self.token) is True
+        self.plan.subscribe(self.user, self.token)
         customer = stripe.Customer.retrieve(customer.id)
         assert customer.subscriptions.total_count == 1
         assert customer.delete()["deleted"] is True
@@ -177,7 +177,7 @@ class TestPlan(object):
         self.user.customer_token = customer.id
 
         assert customer.subscriptions.total_count == 1
-        assert Plan.unsubscribe(self.user) is True
+        Plan.unsubscribe(self.user)
         customer = stripe.Customer.retrieve(customer.id)
         assert customer.subscriptions.total_count == 0
         assert customer.delete()["deleted"] is True

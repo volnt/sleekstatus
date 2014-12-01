@@ -4,7 +4,7 @@ is_authenticated module
 Contains the is_authenticated decorator
 """
 from functools import wraps
-from flask import make_response, session, jsonify
+from flask import session
 
 
 def is_authenticated(function):
@@ -20,9 +20,6 @@ def is_authenticated(function):
         """
         from app.api import User
         email, password = session.get("email"), session.get("password")
-        if not User.valid_auth(email, password):
-            return make_response(jsonify({
-                'error': 'Authentication needed.'
-            }), 401)
-        return function(User(email, password), *args, **kwargs)
+        user = User.login(email, password)
+        return function(user, *args, **kwargs)
     return wrapped

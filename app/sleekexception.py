@@ -12,7 +12,7 @@ from stripe.error import APIConnectionError, StripeError
 def catch_sleekexception(function):
     """
     Decorator catching SleekException and Stripe exceptions.
-    
+
     It propagates the exceptions as clean json responses.
     """
     @wraps(function)
@@ -22,21 +22,24 @@ def catch_sleekexception(function):
         """
         try:
             ret = function(*args, **kwargs)
-        except SleekException as e:
+        except SleekException as error:
             return make_response(jsonify({
-                "error": e.message
-            }), e.status_code)
+                "error": error.message
+            }), error.status_code)
         except (CardError, InvalidRequestError, AuthenticationError,
-                APIConnectionError, StripeError) as e:
+                APIConnectionError, StripeError) as error:
             return make_response(jsonify({
-                "error": e.message
-            }), e.http_status)            
+                "error": error.message
+            }), error.http_status)
         else:
             return ret
     return wrapped
 
 
 class SleekException(Exception):
+    """
+    Class representing a custom SleekException
+    """
     def __init__(self, message, status_code=400):
         Exception.__init__(self)
         self.message = message
