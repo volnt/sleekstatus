@@ -51,12 +51,14 @@ class Plan(object):
                 )
                 subscription.plan = self._id
                 subscription.save()
+                user.subscription_token = subscription.id
             elif customer.subscriptions.total_count >= 1:
                 subscription = customer.subscriptions.retrieve(
                     customer.subscriptions.data[0]["id"]
                 )
                 subscription.plan = self._id
                 subscription.save()
+                user.subscription_token = subscription.id
             else:
                 subscription = customer.subscriptions.create(plan=self._id)
 
@@ -114,7 +116,7 @@ def plan_get(_id):
 
 @app.route('/api/plan/<_id>', methods=['POST'])
 @is_authenticated
-def plan_subscribe(_id, user):
+def plan_subscribe(user, _id):
     """
     API endpoint subscribing the current user to the plan with the given _id.
     """
@@ -132,7 +134,7 @@ def plan_subscribe(_id, user):
 
 @app.route('/api/plan/<_id>', methods=['DELETE'])
 @is_authenticated
-def plan_unsubscribe(_id, user):
+def plan_unsubscribe(user, _id):
     """
     API endpoint unsubscribing the current user from the plan wth the given
     _id.
