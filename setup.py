@@ -9,6 +9,7 @@ setup(
     include_package_data=True,
     install_requires = [
         'Flask==0.10.1',
-        'redis==2.10.3'
+        'redis==2.10.3',
+        'stripe==1.19.1'
         ],
 )
