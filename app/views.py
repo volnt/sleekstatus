@@ -1,5 +1,5 @@
 from app import app
-from flask import request, send_file, abort
+from flask import send_file, abort
 
 
 @app.route('/')

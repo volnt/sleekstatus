@@ -1,4 +1,4 @@
-all: pylint pep8 tests
+all: pyflakes pep8 tests
 
 tests:
 	pip install -e .
@@ -7,7 +7,7 @@ tests:
 pep8:
 	pep8 app
 
-pylint:
-	pylint app
+pyflakes:
+	pyflakes app
 
 .PHONY: tests

@@ -2,7 +2,7 @@ from app import app, redis
 from app.api import Plan
 from app.utils import str_to_none
 from hashlib import sha1
-from flask import jsonify, make_response, abort, request, session
+from flask import jsonify, make_response, request, session
 
 
 class User(object):
@@ -62,7 +62,6 @@ class User(object):
         the user. Then if it's unknown we register him and if the
         user is known but the passwords don't match we return None.
         """
-        sha = sha1(email).hexdigest()
         user = cls(email, password)
 
         if User.valid_auth(email, password) or user.register():

@@ -1,6 +1,6 @@
 from app import app, redis
 from hashlib import sha1
-from flask import jsonify, make_response, abort, request
+from flask import jsonify, make_response, request
 from app.utils import is_authenticated
 
 
