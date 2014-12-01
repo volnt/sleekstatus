@@ -5,11 +5,15 @@ Contains the SleekException and the catch_sleekexception decorator
 """
 from functools import wraps
 from flask import make_response, jsonify
+from stripe.error import CardError, InvalidRequestError, AuthenticationError
+from stripe.error import APIConnectionError, StripeError
 
 
 def catch_sleekexception(function):
     """
-    Decorator catching sleekexceptions
+    Decorator catching SleekException and Stripe exceptions.
+    
+    It propagates the exceptions as clean json responses.
     """
     @wraps(function)
     def wrapped(*args, **kwargs):
@@ -22,6 +26,11 @@ def catch_sleekexception(function):
             return make_response(jsonify({
                 "error": e.message
             }), e.status_code)
+        except (CardError, InvalidRequestError, AuthenticationError,
+                APIConnectionError, StripeError) as e:
+            return make_response(jsonify({
+                "error": e.message
+            }), e.http_status)            
         else:
             return ret
     return wrapped

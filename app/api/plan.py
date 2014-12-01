@@ -115,6 +115,7 @@ def plan_get(_id):
 
 @app.route('/api/plan/<_id>', methods=['POST'])
 @is_authenticated
+@catch_sleekexception
 def plan_subscribe(user, _id):
     """
     API endpoint subscribing the current user to the plan with the given _id.
@@ -130,6 +131,7 @@ def plan_subscribe(user, _id):
 
 @app.route('/api/plan/<_id>', methods=['DELETE'])
 @is_authenticated
+@catch_sleekexception
 def plan_unsubscribe(user, _id):
     """
     API endpoint unsubscribing the current user from the plan wth the given
