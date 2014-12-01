@@ -7,15 +7,15 @@ class Alert(object):
     def __init__(self, email, url, sha=None):
         self.email = email
         self.url = url
-        self.alert_sha = sha1(self.email+self.url).hexdigest() if sha is None else sha
+        self.sha = sha1(self.email+self.url).hexdigest() if sha is None else sha
 
     def save(self):
         email_sha = sha1(self.email).hexdigest()
 
         return bool(
-            redis.sadd("sl:alert:ids", self.alert_sha) and
-            redis.sadd("sl:account:{}:alerts".format(email_sha), self.alert_sha) and
-            redis.hmset("sl:alert:{}".format(self.alert_sha), self.to_dict())
+            redis.sadd("sl:alert:ids", self.sha) and
+            redis.sadd("sl:account:{}:alerts".format(email_sha), self.sha) and
+            redis.hmset("sl:alert:{}".format(self.sha), self.to_dict())
         )
 
     @staticmethod
@@ -36,7 +36,7 @@ class Alert(object):
         return {
             "email": self.email, 
             "url": self.url,
-            "sha": self.alert_sha
+            "sha": self.sha
         }
 
     @staticmethod
@@ -45,15 +45,14 @@ class Alert(object):
 
         return redis.smembers("sl:account:{}:alerts".format(sha))
 
-@app.route('/api/alert/create', methods=['POST'])
+@app.route('/api/alert', methods=['POST'])
 @is_authenticated
 def create_alert(user):
     if not request.json:
         return make_response(jsonify({"error": "Could not create alert."}), 400)
     alert = Alert(request.json.get("email"), request.json.get("url"))
 
-    if (not user.plan or 
-        len(Alert.get_user_alerts(user.email)) >= user.plan.alert_number):
+    if not user.plan or len(Alert.get_user_alerts(user.email)) >= user.plan.alert_number:
         return make_response(jsonify({"error": "Too many alert already created."}), 400)
     elif alert.save():
         return make_response(jsonify(alert.to_dict()))
