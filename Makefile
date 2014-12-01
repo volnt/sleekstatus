@@ -1,3 +1,3 @@
 test:
 	pip install -e .
-	py.test tests/
+	py.test --cov app --cov-report html tests/ 
