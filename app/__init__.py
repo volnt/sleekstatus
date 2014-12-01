@@ -19,4 +19,4 @@ stripe.api_key = "sk_test_Btmp0w2nKxakPnstPjToGwgP"
 from app.api import alert, user, plan
 from app import views
 
-__all__ = [user, alert, plan, views]
+__all__ = ["user", "alert", "plan", "views"]
