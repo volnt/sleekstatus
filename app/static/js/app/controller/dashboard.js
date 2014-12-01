@@ -20,7 +20,7 @@ app.controller("DashboardCtrl", function($scope, $http, $routeParams, $location,
       return ;
     }
     var params = {"auth": $scope.Auth.get(), "email": $scope.Auth.get().email, "url" : url};
-    $http.post("/api/alert/create", params).success(function(response) {
+    $http.post("/api/alert", params).success(function(response) {
       $scope.alerts.push(response);
     }).error(function(response) {
       console.log("Error : " + response.error);
