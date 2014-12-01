@@ -1,6 +1,7 @@
 """
 Sleekstatus module
 """
+from app.sleekexception import SleekException, catch_sleekexception
 from flask import Flask
 import redis
 import os

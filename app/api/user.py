@@ -4,6 +4,7 @@ User module
 Contains the User class and the associated API endpoints.
 """
 from app import app, redis
+from app import SleekException, catch_sleekexception
 from app.api import Plan
 from app.utils import str_to_none
 from hashlib import sha1
@@ -112,16 +113,17 @@ class User(object):
 
 
 @app.route('/api/user/login', methods=['POST'])
+@catch_sleekexception
 def user_login():
     """
     Try to login user based on email and password
     """
     if not request.json:
-        return make_response(jsonify({"error": "Incorrect parameters."}), 400)
+        raise SleekException("Could not login.")
     user = User.login(request.json.get("email"), request.json.get("password"))
 
     if user:
         session["email"], session["password"] = user.email, user.password
         return make_response(jsonify(user.to_dict()))
     else:
-        return make_response(jsonify({"error": "Incorrect password."}), 401)
+        raise SleekException("Incorrect password.", 401)

@@ -26,6 +26,15 @@ class TestPlanAPI(object):
             assert res.status_code == 200
             assert json.loads(res.data)["id"] == plan
 
+    def test_not_found_plan_get(self):
+        """
+        It should return a 404 error if it doesn't find the plan
+        """
+        res = self.client.get("/api/plan/huge")
+        
+        assert res.status_code == 404
+        assert json.loads(res.data)["error"]
+
     @patch.object(Plan, "subscribe")
     def test_unauthenticated_plan_subscribe(self, subscribe):
         """

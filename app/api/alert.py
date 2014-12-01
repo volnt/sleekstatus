@@ -4,6 +4,7 @@ Alert module
 Contains the Alert class and the associated API endpoints.
 """
 from app import app, redis
+from app import SleekException, catch_sleekexception
 from hashlib import sha1
 from flask import jsonify, make_response, request
 from app.utils import is_authenticated
@@ -77,30 +78,25 @@ class Alert(object):
 
 @app.route('/api/alert', methods=['POST'])
 @is_authenticated
+@catch_sleekexception
 def create_alert(user):
     """
     API endpoint creating an alert from an email and an url.
     """
     if not request.json:
-        return make_response(jsonify({
-            "error": "Could not create alert."
-        }), 400)
+        raise SleekException("Could not create alert.")
     alert = Alert(request.json.get("email"), request.json.get("url"))
     user_alerts = Alert.get_user_alerts(user.email)
     if not user.plan or len(user_alerts) >= user.plan.alert_number:
-        return make_response(jsonify({
-            "error": "Too many alert already created."
-        }), 400)
+        raise SleekException("Too many alert already created.")
     elif alert.save():
         return make_response(jsonify(alert.to_dict()))
     else:
-        return make_response(jsonify({
-            "error": "Could not create alert."
-        }), 400)
-
+        raise SleekException("Could not create alert.")
 
 @app.route('/api/alert/<sha>', methods=['DELETE'])
 @is_authenticated
+@catch_sleekexception
 def delete_alert(_, sha):
     """
     API endpoint deleting an alert from an email and an url.
@@ -110,9 +106,7 @@ def delete_alert(_, sha):
             "success": "Alert has been removed successfully."
         }))
     else:
-        return make_response(jsonify({
-            "error": "Could not delete alert"
-        }), 400)
+        raise SleekException("Could not delete alert.")
 
 
 @app.route('/api/alert')
@@ -127,6 +121,4 @@ def get_user_alerts(user):
                   [Alert.from_sha(sha) for sha in alert_ids]]
         return make_response(jsonify({"alerts": alerts}))
     else:
-        return make_response(jsonify({
-            "error": "Could not get user alerts"
-        }), 400)
+        raise SleekException("Could not get user's alerts.")
