@@ -1,3 +1,8 @@
+"""
+Alert module
+
+Contains the Alert class and the associated API endpoints.
+"""
 from app import app, redis
 from hashlib import sha1
 from flask import jsonify, make_response, request
@@ -5,12 +10,23 @@ from app.utils import is_authenticated
 
 
 class Alert(object):
+    """
+    Alert class
+
+    Represent an Alert with an email and an url.
+    """
     def __init__(self, email, url, sha=None):
+        """
+        Return an alert from an email and an url.
+        """
         self.email = email
         self.url = url
-        self.sha = sha1(self.email + self.url).hexdigest()
+        self.sha = sha1(self.email + self.url).hexdigest() if not sha else sha
 
     def save(self):
+        """
+        Save the current alert to database.
+        """
         email_sha = sha1(self.email).hexdigest()
 
         return bool(
@@ -21,6 +37,9 @@ class Alert(object):
 
     @staticmethod
     def delete(alert_sha):
+        """
+        Delete the given alert.
+        """
         alert = redis.hgetall("sl:alert:{}".format(alert_sha))
         sha = sha1(alert["email"]).hexdigest()
 
@@ -31,9 +50,15 @@ class Alert(object):
 
     @classmethod
     def from_sha(cls, sha):
+        """
+        Return an Alert from a sha.
+        """
         return cls(**redis.hgetall("sl:alert:{}".format(sha)))
 
     def to_dict(self):
+        """
+        Return a dict representation of the current alert.
+        """
         return {
             "email": self.email,
             "url": self.url,
@@ -42,6 +67,9 @@ class Alert(object):
 
     @staticmethod
     def get_user_alerts(email):
+        """
+        Return all the alerts associated with an email.
+        """
         sha = sha1(email).hexdigest()
 
         return redis.smembers("sl:account:{}:alerts".format(sha))
@@ -50,6 +78,9 @@ class Alert(object):
 @app.route('/api/alert', methods=['POST'])
 @is_authenticated
 def create_alert(user):
+    """
+    API endpoint creating an alert from an email and an url.
+    """
     if not request.json:
         return make_response(jsonify({
             "error": "Could not create alert."
@@ -70,7 +101,10 @@ def create_alert(user):
 
 @app.route('/api/alert/<sha>', methods=['DELETE'])
 @is_authenticated
-def delete_alert(user, sha):
+def delete_alert(_, sha):
+    """
+    API endpoint deleting an alert from an email and an url.
+    """
     if Alert.delete(sha):
         return make_response(jsonify({
             "success": "Alert has been removed successfully."
@@ -84,9 +118,13 @@ def delete_alert(user, sha):
 @app.route('/api/alert')
 @is_authenticated
 def get_user_alerts(user):
+    """
+    API endpoint returning all the current user's alerts
+    """
     alert_ids = list(Alert.get_user_alerts(user.email))
     if alert_ids is not None:
-        alerts = map(Alert.to_dict, map(Alert.from_sha, alert_ids))
+        alerts = [Alert.to_dict(alert) for alert in
+                  [Alert.from_sha(sha) for sha in alert_ids]]
         return make_response(jsonify({"alerts": alerts}))
     else:
         return make_response(jsonify({

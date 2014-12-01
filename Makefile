@@ -1,4 +1,4 @@
-all: pyflakes pep8 tests
+all: pylint pyflakes pep8 tests
 
 tests:
 	pip install -e .
@@ -10,4 +10,7 @@ pep8:
 pyflakes:
 	pyflakes app
 
-.PHONY: tests
+pylint:
+	pylint --disable=deprecated-module --disable=no-member --disable=cyclic-import --disable=too-many-arguments --const-rgx='[A-Za-z0-9_]{2,30}$$' app/
+
+.PHONY: all tests pep8 pyflakes pylint

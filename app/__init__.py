@@ -1,3 +1,6 @@
+"""
+Sleekstatus module
+"""
 from flask import Flask
 import redis
 import os

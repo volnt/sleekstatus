@@ -1,3 +1,9 @@
+"""
+Config module
+
+Contains the MAIL object containing the different informations
+needed to connect to the smtp server.
+"""
 from os import environ
 
 MAIL = {
