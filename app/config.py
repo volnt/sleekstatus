@@ -6,4 +6,3 @@ MAIL = {
     "ADDR": environ["MAIL_ADDR"],
     "SMTP": environ["MAIL_SMTP"]
 }
-

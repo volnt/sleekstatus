@@ -2,8 +2,10 @@ from app import app, stripe
 from flask import jsonify, make_response, abort, request
 from app.utils import is_authenticated
 
+
 class Plan(object):
-    def __init__(self, _id, name, price, alert_number, interval="month", currency="usd"):
+    def __init__(self, _id, name, price, alert_number,
+                 interval="month", currency="usd"):
         self._id = _id
         self.name = name
         self.price = price
@@ -16,8 +18,8 @@ class Plan(object):
         if not user.customer_token:
             try:
                 customer = stripe.Customer.create(
-                    card=token, 
-                    plan=self._id, 
+                    card=token,
+                    plan=self._id,
                     email=user.email
                 )
             except Exception as e:
@@ -49,9 +51,9 @@ class Plan(object):
         return user.save()
 
     def unsubscribe(self, user):
-        customer = stripe.Customer.retrieve(user.customer_token) 
+        customer = stripe.Customer.retrieve(user.customer_token)
         user.subscription_token = customer.subscriptions.data[0]["id"]
-        subscription = customer.subscriptions.retrieve(user.subscription_token).delete()
+        customer.subscriptions.retrieve(user.subscription_token).delete()
         user.plan = None
 
         # TODO : send good bye email
@@ -74,6 +76,7 @@ class Plan(object):
             "alert_number": self.alert_number
         }
 
+
 @app.route('/api/plan/<_id>')
 def plan_get(_id):
     plan = Plan.from_id(_id)
@@ -81,8 +84,10 @@ def plan_get(_id):
     if plan:
         return make_response(jsonify(plan.to_dict()), 200)
     else:
-        return make_response(jsonify({"error": "Could not find plan '{}'"
-                                      .format(_id)}))
+        return make_response(jsonify({
+            "error": "Could not find plan '{}'".format(_id)
+        }))
+
 
 @app.route('/api/plan/<_id>', methods=['POST'])
 @is_authenticated
@@ -94,8 +99,10 @@ def plan_subscribe(_id, user):
     if plan and plan.subscribe(user, request.json.get("token")):
         return make_response(jsonify(plan.to_dict()), 200)
     else:
-        return make_response(jsonify({"error": "Could not subscribe user."}), 400)
-        
+        return make_response(jsonify({
+            "error": "Could not subscribe user."
+        }), 400)
+
 
 @app.route('/api/plan/<_id>', methods=['DELETE'])
 @is_authenticated
@@ -103,10 +110,14 @@ def plan_unsubscribe(_id, user):
     plan = Plan.from_id(_id)
 
     if plan and plan.unsubscribe(user):
-        return make_response(jsonify({"success": "Unsubscribed user successfully."}), 200)
+        return make_response(jsonify({
+            "success": "Unsubscribed user successfully."
+        }), 200)
     else:
-        return make_response(jsonify({"error": "Could not unsubscribe user."}), 400)
-    
+        return make_response(jsonify({
+            "error": "Could not unsubscribe user."
+        }), 400)
+
 plans = {
     "basic": {
         "_id": "basic",
@@ -115,7 +126,7 @@ plans = {
         "interval": "month",
         "currency": "usd",
         "alert_number": 3,
-    }, 
+    },
     "big": {
         "_id": "big",
         "name": "Big Plan",
@@ -123,7 +134,7 @@ plans = {
         "interval": "month",
         "currency": "usd",
         "alert_number": 20,
-    }, 
+    },
     "unlimited": {
         "_id": "unlimited",
         "name": "Huge Plan",

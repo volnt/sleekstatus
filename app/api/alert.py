@@ -3,11 +3,12 @@ from hashlib import sha1
 from flask import jsonify, make_response, abort, request
 from app.utils import is_authenticated
 
+
 class Alert(object):
     def __init__(self, email, url, sha=None):
         self.email = email
         self.url = url
-        self.sha = sha1(self.email+self.url).hexdigest() if sha is None else sha
+        self.sha = sha1(self.email + self.url).hexdigest()
 
     def save(self):
         email_sha = sha1(self.email).hexdigest()
@@ -22,7 +23,7 @@ class Alert(object):
     def delete(alert_sha):
         alert = redis.hgetall("sl:alert:{}".format(alert_sha))
         sha = sha1(alert["email"]).hexdigest()
-    
+
         return bool(
             alert and redis.srem("sl:alert:ids", alert_sha) and
             redis.srem("sl:account:{}:alerts".format(sha), alert_sha)
@@ -34,7 +35,7 @@ class Alert(object):
 
     def to_dict(self):
         return {
-            "email": self.email, 
+            "email": self.email,
             "url": self.url,
             "sha": self.sha
         }
@@ -45,27 +46,40 @@ class Alert(object):
 
         return redis.smembers("sl:account:{}:alerts".format(sha))
 
+
 @app.route('/api/alert', methods=['POST'])
 @is_authenticated
 def create_alert(user):
     if not request.json:
-        return make_response(jsonify({"error": "Could not create alert."}), 400)
+        return make_response(jsonify({
+            "error": "Could not create alert."
+        }), 400)
     alert = Alert(request.json.get("email"), request.json.get("url"))
-
-    if not user.plan or len(Alert.get_user_alerts(user.email)) >= user.plan.alert_number:
-        return make_response(jsonify({"error": "Too many alert already created."}), 400)
+    user_alerts = Alert.get_user_alerts(user.email)
+    if not user.plan or len(user_alerts) >= user.plan.alert_number:
+        return make_response(jsonify({
+            "error": "Too many alert already created."
+        }), 400)
     elif alert.save():
         return make_response(jsonify(alert.to_dict()))
     else:
-        return make_response(jsonify({"error": "Could not create alert."}), 400)
+        return make_response(jsonify({
+            "error": "Could not create alert."
+        }), 400)
+
 
 @app.route('/api/alert/<sha>', methods=['DELETE'])
 @is_authenticated
 def delete_alert(user, sha):
     if Alert.delete(sha):
-        return make_response(jsonify({"success": "Alert has been removed successfully."}))
+        return make_response(jsonify({
+            "success": "Alert has been removed successfully."
+        }))
     else:
-        return make_response(jsonify({"error": "Could not delete alert"}), 400)
+        return make_response(jsonify({
+            "error": "Could not delete alert"
+        }), 400)
+
 
 @app.route('/api/alert')
 @is_authenticated
@@ -75,4 +89,6 @@ def get_user_alerts(user):
         alerts = map(Alert.to_dict, map(Alert.from_sha, alert_ids))
         return make_response(jsonify({"alerts": alerts}))
     else:
-        return make_response(jsonify({"error": "Could not get user alerts"}), 400)
+        return make_response(jsonify({
+            "error": "Could not get user alerts"
+        }), 400)
