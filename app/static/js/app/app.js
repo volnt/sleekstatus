@@ -115,7 +115,7 @@ app.factory('Auth', function($http, $location) {
       if (typeof success == "function") {
         success();
       }
-    }).error(function() {
+    }).error(function(response) {
       logout();
       $location.url("/");
       if (typeof error == "function") {
