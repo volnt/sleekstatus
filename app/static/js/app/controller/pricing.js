@@ -46,10 +46,6 @@ app.controller("PricingCtrl", function($scope, $http, $routeParams, $location, A
     });
   };
 
-  $scope.loading = function(variable) {
-    console.log(variable);
-  };
-
   $scope.unsubscribe = function(plan) {
     plan.loader = {unsubscribe: true};
 
