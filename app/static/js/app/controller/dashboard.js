@@ -10,16 +10,16 @@ app.controller("DashboardCtrl", function($scope, $http, $routeParams, $location,
     }).error(function(response) {
       console.log("Error while fetching alerts.");
       if (response.code == 401) {
-	Auth.load();
+    	Auth.load();
       }
     });
   };
 
   $scope.addAlert = function(url) {
-    if ($scope.alerts.length >= 10) {
-      return ;
-    }
-    var params = {"auth": $scope.Auth.get(), "email": $scope.Auth.get().email, "url" : url};
+    var params = {
+      email: $scope.Auth.get().email, 
+      url : url
+    };
     $http.post("/api/alert", params).success(function(response) {
       $scope.alerts.push(response);
     }).error(function(response) {
