@@ -4,12 +4,15 @@ Sleekstatus module
 from app.sleekexception import SleekException, catch_sleekexception
 from flask import Flask
 import redis
+from celery import Celery
 import os
 import stripe
 import sys
 
 app = Flask(__name__)
 app.secret_key = os.urandom(32)
+
+async = Celery('sl', broker='amqp://localhost')
 
 if "py.test" in sys.argv[0]:
     redis = redis.Redis(db=2)

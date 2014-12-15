@@ -3,9 +3,11 @@ Mail module
 
 Contains the Mail class that's used to send mails.
 """
+from app import async
 from app.config import AWS
 import boto.ses
 
+@async.task
 def send_email(from_addr, subject, body, to_addr_list):
     conn = boto.ses.connect_to_region(
         'us-west-2',
