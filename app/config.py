@@ -6,9 +6,7 @@ needed to connect to the smtp server.
 """
 from os import environ
 
-MAIL = {
-    "LOGIN": environ["MAIL_LOGIN"],
-    "PASSWORD": environ["MAIL_PASSWORD"],
-    "ADDR": environ["MAIL_ADDR"],
-    "SMTP": environ["MAIL_SMTP"]
+AWS = {
+    "ACCESS_KEY_ID": environ["AWS_ACCESS_KEY_ID"],
+    "SECRET_ACCESS_KEY": environ["AWS_SECRET_ACCESS_KEY"]
 }
