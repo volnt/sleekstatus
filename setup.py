@@ -10,6 +10,8 @@ setup(
     install_requires = [
         'Flask==0.10.1',
         'redis==2.10.3',
-        'stripe==1.19.1'
+        'stripe==1.19.1',
+        'celery==3.1.17',
+        'boto==2.34.0'
         ],
 )
