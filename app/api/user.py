@@ -6,7 +6,7 @@ Contains the User class and the associated API endpoints.
 from app import app, redis
 from app import SleekException, catch_sleekexception
 from app.api import Plan
-from app.utils import str_to_none
+from app.utils import str_to_none, send_email
 from hashlib import sha1
 from flask import jsonify, make_response, request, session
 
@@ -57,7 +57,7 @@ class User(object):
             user_info.get("subscription_end")
         )
 
-    def save(self):
+    def save(self, register=False):
         """
         Save the current user infos to database.
         """
@@ -67,6 +67,11 @@ class User(object):
 
         if not redis.hmset("sl:account:{}".format(sha), infos):
             raise SleekException("Could not save current user.", 401)
+        if register:
+            send_email.delay(
+                "florent.esp@gmail.com", "Welcome to sleekstatus !",
+                "Welcome message", [self.email]
+            )
 
     def register(self):
         """
@@ -79,7 +84,7 @@ class User(object):
 
         if not redis.sadd("sl:account:ids", sha):
             raise SleekException("Could not register new user.", 401)
-        self.save()
+        self.save(register=True)
 
     @staticmethod
     def valid_auth(email, password):
