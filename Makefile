@@ -5,6 +5,7 @@ install:
 
 tests:
 	py.test --cov app --cov-report html tests/ 
+	jasmine-ci
 
 pep8:
 	pep8 app
