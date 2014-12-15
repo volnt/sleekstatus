@@ -88,16 +88,13 @@ app.factory('Auth', function($http, $location) {
     }
   };
 
-  var login = function(email, password) {
+  var login = function(email, password, error) {
     if (!email || !password) return ;
     var hashlib = new Rusha();
 
     verify(email, hashlib.digest(password), function() {
       $location.url("/dashboard");
-    }, function() {
-      console.log("Error when logging in.");
-    });
-
+    }, error);
   };
 
   var logout = function() {

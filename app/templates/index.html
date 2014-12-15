@@ -7,7 +7,8 @@
       <h2><span class="orange">Sleek</span> website status monitoring.</h2>
       <h3>Get an email as soon as your website goes down.</h3>
     </div>
-    <form class="form form-register" role="form" ng-submit="Auth.login(email, password)" ng-show="!Auth.is_authenticated()">
+    <form class="form form-register" role="form" ng-submit="tryLogin(email, password)" ng-show="!Auth.is_authenticated()">
+      <div class="alert alert-danger" role="alert" ng-show="Error.login">{{ Error.login.message }}</div>
       <div class="form-group">
         <input type="email" class="form-control input-bigger input-lg" id="input-email" placeholder="Email" ng-model="email">
       </div>
