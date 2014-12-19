@@ -22,11 +22,12 @@ sleekstatus-env.zip: /tmp/sleek-release /tmp/sleek-release/config.py
 	cd /tmp/sleek-release && zip -r $@ Dockerfile Dockerrun.aws.json config.py sleekstatus
 	cp /tmp/sleek-release/$@ $@
 
-/tmp/sleek-release:
+/tmp/sleek-release: Dockerfile Dockerrun.aws.json setup.py
 	rm -rf $@
 	mkdir $@
 	cd $@ && git clone git@github.com:volnt/sleekstatus.git
 	cd $@ && cp sleekstatus/Docker* .
+	cd $@ && rm -rf sleekstatus/.git
 	cd $@/sleekstatus/app/static/ && compass compile
 
 /tmp/sleek-release/config.py:
