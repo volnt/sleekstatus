@@ -3,7 +3,7 @@ Sleekstatus module
 
 It processes the alerts stored in database when called.
 """
-from app.utils import Mail
+from app.utils import send_email
 from app import redis
 import requests
 
@@ -28,7 +28,7 @@ def trigger_alert(alert):
     """
     subject = "[WEBSTATUS] {} - KO".format(alert["url"])
     content = """Hi, it seems that your website is down."""
-    Mail(subject, content, [alert["email"]], []).send()
+    send_email.delay("trash@volent.fr", subject, content, [alert["email"]])
 
 
 def main():

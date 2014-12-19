@@ -11,11 +11,11 @@ def test_redis_keys(hgetall, smembers):
     smembers.assert_called_once_with("sl:alert:ids")
     hgetall.assert_has_calls == [call("randomkey"), call(42)]
 
-@patch('app.sleekstatus.Mail')
-def test_alert_send_mail(mail):
+@patch('app.sleekstatus.send_email')
+def test_alert_send_mail(send_email):
     sl.trigger_alert(MagicMock())
 
-    mail.return_value.send.assert_called_once()
+    send_email.delay.assert_called_once()
 
 @patch.object(sl, 'get_alert_ids', return_value=[MagicMock()])
 @patch.object(sl, 'get_alert', return_value=MagicMock())

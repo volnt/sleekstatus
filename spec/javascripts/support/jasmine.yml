@@ -12,7 +12,14 @@
 #   - dist/**/*.js
 #
 src_files:
-  - js/**/*.js
+  - js/libs/*.js
+  - js/libs/rusha.min.js 
+  - js/libs/jquery.min.js
+  - js/libs/angular.min.js
+  - js/libs/angular-route.min.js
+  - js/libs/angular-mocks.js
+  - js/app/app.js
+  - js/app/controller/*.js
 
 # stylesheets
 #
