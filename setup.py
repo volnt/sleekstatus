@@ -3,7 +3,7 @@ from os.path import join, dirname
 
 setup(
     name='sleekstatus',
-    version="0.1.0",
+    version="0.1.1",
     packages=find_packages(),
     long_description=open(join(dirname(__file__), 'README.md')).read(),
     include_package_data=True,
