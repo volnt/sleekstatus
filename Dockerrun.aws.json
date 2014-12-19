@@ -1,8 +1,4 @@
 {
     "AWSEBDockerrunVersion": "1",
-    "Authentication": {
-        "Bucket": "elasticbeanstalk-us-west-2-493286631516",
-        "Key": "dockercfg"
-    },
     "Ports": [{"ContainerPort": "5000"}]
 }
