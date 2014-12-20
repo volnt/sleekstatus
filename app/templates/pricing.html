@@ -1,33 +1,35 @@
-<section id="dashboard">
-  <div class="container alerts-container">
+<section id="pricing">
+  <div class="container">
     <div class="page-header">
-      <h2 style="padding-left: 20px">Subscription <small>{{ Auth.get().plan.name }}</small></h2>
+      <h1 style="padding-left: 20px">Subscription <small>{{ Auth.get().plan.name }}</small></h1>
     </div>      
     <div class="row pricing-tab">
-      <div class="col-lg-4 col-sm-4 col-xs-12 pricing">
+      <div class="col-lg-4 col-sm-4 col-xs-12 pricing" ng-repeat="plan in plans" ng-class="plan.id == 'big' ? 'pricing-highlight' : ''">
         <div class="pricing-header">
-          <h3>{{ plans.basic.name }}</h3>
-          <span class="pricing-price">{{ plans.basic.price }}$<small>/mo</small></span>
+          <h2>{{ plan.name }}</h2>
+          <span class="pricing-price">{{ plan.price }}$<small>/mo</small></span>
         </div>
         <hr>
         <div class="pricing-descr">
-          {{ plans.basic.alert_number }} alerts<br>
+          {{ plan.alert_number }} websites<br>
+	  {{ plan.retention || 7 }} retention days<br>
+	  Full data export<br>
         </div>
 	<div ng-show="Auth.is_authenticated()">
 	  <hr>
-          <button class="btn btn-warning" data-toggle="modal" data-target=".modal-basic" ng-show="Auth.get().plan.id != 'basic'">Subscribe</button>
-          <button class="btn btn-warning" ng-click="unsubscribe(plans.basic)" ng-disabled="plans.basic.loader.unsubscribe" ng-show="Auth.get().plan.id == 'basic'">Unsubscribe</button>
-	  <div class="modal fade modal-basic" tabindex="-1" role="dialog" aria-labelledby="Basic subscription form" aria-hidden="true">
+          <button class="btn btn-warning" data-toggle="modal" data-target=".modal-basic" ng-show="Auth.get().plan.id != plan.id">Subscribe</button>
+          <button class="btn btn-warning" ng-click="unsubscribe(plan)" ng-disabled="plan.loader.unsubscribe" ng-show="Auth.get().plan.id == plan.id">Unsubscribe</button>
+	  <div class="modal fade modal-basic" tabindex="-1" role="dialog" aria-labelledby="{{ plan.name }} subscription form" aria-hidden="true">
 	    <div class="modal-dialog modal-sm">
 	      <div class="modal-content row">
 		<div class="modal-header">
 		  <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-		  <h4 class="modal-title">{{ plans.basic.name }}</h4>
+		  <h4 class="modal-title">{{ plan.name }}</h4>
 		  <div class="modal-email">
 		    {{ Auth.get().email }}
 		  </div>
 		</div>
-		<form class="form" role="form" ng-submit="subscribe(plans.basic)">
+		<form class="form" role="form" ng-submit="subscribe(plan)">
 		  <div class="modal-body">
 		    <span class="payment-errors"></span>
 		    <div class="form-group col-xs-12">
@@ -42,103 +44,8 @@
 		  </div>
 		  <div class="modal-footer col-xs-12 ">
 		    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-		    <button type="submit" class="btn btn-warning" ng-disabled="plans.basic.loader.subscribe">Subscribe {{ plans.basic.price }}$/mo</button> 
-		    <img class="modal-loader" src="/static/img/loader.gif" ng-show="plans.basic.loader.subscribe" />
-		  </div>
-		</form>
-	      </div>
-	    </div>
-	  </div>
-	</div>
-      </div>
-      <div class="col-lg-4 col-sm-4 col-xs-12 pricing pricing-highlight">
-        <div class="pricing-header">
-          <h3>{{ plans.big.name }}</h3>
-          <span class="pricing-price">{{ plans.big.price }}$<small>/mo</small></span>
-        </div>
-        <hr>
-        <div class="pricing-descr">
-          {{ plans.big.alert_number }} alerts<br>
-        </div>
-	<div ng-show="Auth.is_authenticated()">
-	  <hr>
-          <button class="btn btn-default" data-toggle="modal" data-target=".modal-big" ng-show="Auth.get().plan.id != 'big'">Subscribe</button>
-          <button class="btn btn-default" ng-click="unsubscribe(plans.big)" ng-disabled="plans.big.loader.unsubscribe" ng-show="Auth.get().plan.id == 'big'">Unsubscribe</button>
-	  <div class="modal fade modal-big" tabindex="-1" role="dialog" aria-labelledby="Big subscription form" aria-hidden="true">
-	    <div class="modal-dialog modal-sm">
-	      <div class="modal-content row">
-		<div class="modal-header">
-		  <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-		  <h4 class="modal-title">{{ plans.big.name }}</h4>
-		  <div class="modal-email">
-		    {{ Auth.get().email }}
-		  </div>
-		</div>
-		<form class="form" role="form" ng-submit="subscribe(plans.big)">
-		  <div class="modal-body">
-		    <span class="payment-errors"></span>
-		    <div class="form-group col-xs-12">
-		      <input class="form-control" type="text" size="20" ng-model="form.number" placeholder="Card Number">
-		    </div>
-		    <div class="form-group col-xs-6 no-padding-right">
-		      <input class="form-control" type="text" size="3" ng-model="form.cvc" placeholder="CVC">
-		    </div>
-		    <div class="form-group col-xs-6 no-padding-left">
-		      <input class="form-control" type="text" size="5" ng-model="form.expiration" placeholder="MM/YY">
-		    </div>
-		  </div>
-		  <div class="modal-footer col-xs-12 ">
-		    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-		    <button type="submit" class="btn btn-warning" ng-disabled="plans.big.loader.subscribe">Subscribe {{ plans.big.price }}$/mo</button> 
-		    <img class="modal-loader" src="/static/img/loader.gif" ng-show="plans.big.loader.subscribe" />
-		  </div>
-		</form>
-	      </div>
-	    </div>
-	  </div>
-	</div>
-      </div>
-      <div class="col-lg-4 col-sm-4 col-xs-12 pricing">
-        <div class="pricing-header">
-          <h3>{{ plans.unlimited.name }}</h3>
-          <span class="pricing-price">{{ plans.unlimited.price }}$<small>/mo</small></span>
-        </div>
-        <hr>
-        <div class="pricing-descr">
-          {{ plans.unlimited.alert_number }} alerts<br>
-        </div>
-	<div ng-show="Auth.is_authenticated()">
-	  <hr>
-          <button class="btn btn-warning" data-toggle="modal" data-target=".modal-unlimited" ng-show="Auth.get().plan.id != 'unlimited'">Subscribe</button>
-          <button class="btn btn-warning" ng-click="unsubscribe(plans.unlimited)" ng-disabled="plans.unlimited.loader.unsubscribe" ng-show="Auth.get().plan.id == 'unlimited'">Unsubscribe</button>
-
-	  <div class="modal fade modal-unlimited" tabindex="-1" role="dialog" aria-labelledby="Unlimited subscription form" aria-hidden="true">
-	    <div class="modal-dialog modal-sm">
-	      <div class="modal-content row">
-		<div class="modal-header">
-		  <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-		  <h4 class="modal-title">{{ plans.unlimited.name }}</h4>
-		  <div class="modal-email">
-		    {{ Auth.get().email }}
-		  </div>
-		</div>
-		<form class="form" role="form" ng-submit="subscribe(plans.unlimited)">
-		  <div class="modal-body">
-		    <span class="payment-errors"></span>
-		    <div class="form-group col-xs-12">
-		      <input class="form-control" type="text" size="20" ng-model="form.number" placeholder="Card Number">
-		    </div>
-		    <div class="form-group col-xs-6 no-padding-right">
-		      <input class="form-control" type="text" size="3" ng-model="form.cvc" placeholder="CVC">
-		    </div>
-		    <div class="form-group col-xs-6 no-padding-left">
-		      <input class="form-control" type="text" size="5" ng-model="form.expiration" placeholder="MM/YY">
-		    </div>
-		  </div>
-		  <div class="modal-footer col-xs-12 ">
-		    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-		    <button type="submit" class="btn btn-warning" ng-disabled="plans.unlimited.loader.subscribe">Subscribe {{ plans.unlimited.price }}$/mo</button>
-		    <img class="modal-loader" src="/static/img/loader.gif" ng-show="plans.unlimited.loader.subscribe" />
+		    <button type="submit" class="btn btn-warning" ng-disabled="plan.loader.subscribe">Subscribe {{ plan.price }}$/mo</button> 
+		    <img class="modal-loader" src="/static/img/loader.gif" ng-show="plan.loader.subscribe" />
 		  </div>
 		</form>
 	      </div>
@@ -150,7 +57,9 @@
         1 check / minute
       </div>
     </div>
-
+</section>
+<section id="register">
+  <div class="container">
     <form class="form form-register" role="form" ng-submit="Auth.login(email, password)" ng-show="!Auth.is_authenticated()">
       <div class="form-group">
 	<input type="email" class="form-control input-bigger input-lg" id="input-email" placeholder="Email" ng-model="email">
@@ -161,4 +70,5 @@
       <button type="submit" class="btn btn-warning btn-cta">Start now</button>
     </form>
   </div>
+</div>
 </section>
