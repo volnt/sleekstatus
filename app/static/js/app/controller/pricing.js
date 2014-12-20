@@ -78,6 +78,5 @@ app.controller("PricingCtrl", function($scope, $http, $routeParams, $location, A
      */
     $scope.Auth.load();
     $scope.fetchPlans();
-    $(".navbar").addClass("navbar-default").removeClass("navbar-transparent");
   }();
 });

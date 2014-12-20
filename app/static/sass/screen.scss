@@ -5,6 +5,14 @@
 
 @import "compass/reset";
 
+$orange: #EF6E2C;
+$orange-light: #DAB646;
+$orange-dark: #A35033;
+$green: #65C296;
+$grey: #CCC;
+$grey-light: #F0F0F0;
+$grey-dark: #333;
+
 html, body {
     height: 100%;
 }
@@ -14,7 +22,7 @@ body {
     margin: 0;
     padding: 0;
     font-family: sans-serif;
-    background: #f0f0f0;
+    background: $grey-light;
 }
 
 .alerts-container {
@@ -30,8 +38,30 @@ body {
     font-size: 20px;
 }
 
+input, button {
+    border-radius: 0!important;	
+}
+
+input:focus {
+    border-color: $green !important;
+    outlin: 0;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px $green !important;
+    -box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px $green !important;
+}
+
+#footer {
+    background: $orange-dark;
+    color: white;
+}
+
 form .btn-cta {
     width: 100%;
+    background: $orange;
+    border-color: $orange-dark;
+    &:hover {
+	background: $orange-dark;
+	border-color: $orange-dark;
+    }
 }
 
 .btn-cta {
@@ -43,78 +73,70 @@ form .btn-cta {
     font-size: 20px;
 }
 
-.background {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    z-index: -9;
-    img {
-        position: absolute;
-        left: 50%;
-        margin-left: -960px;
-    }
+section {
+    padding: 3% 0 3% 0;
 }
 
 .navbar {
     border-radius: 0 !important;
+    border: none;
+    border-bottom: $grey solid 1px;
 }
 
 .navbar-fixed-top {
     border-radius: 5px;
 }
 
+#register {
+    background: white;
+}
 
 .navbar-brand {
     font-weight: bold;
 }
 
-.navbar-default {
-    .navbar-brand {
-        .orange {
-            color: #bd7a1b;
-        }
-        &:hover {
-            .orange {
-                color: #f0ad4e;
-            }
-        }
-    }
-    ul.nav.navbar-nav li>a {
-        color: #ccc;
-        &:hover {
-            color: white;
-        }
-    }
-}
-
 .orange {
-    color: #f0ad4e;
+    color: $orange;
 }
 .orange-dark {
-    color: #bd7a1b;
+    color: $orange-dark;
 }
 
 ul.nav.navbar-nav li>a {
     font-weight: bold;
 }
 
-.navbar-transparent {
+.navbar .container {
+    height: 100%;
+}
+
+.brand-name {
+    float: right;
+    line-height: 100px;
+    margin-left: 10px;
+}
+
+.navbar-default {
+    background: white;
+    height: 130px;
     .navbar-brand {
         .orange {
-            color: #f0ad4e;
+            color: $orange;
         }
         &:hover {
             .orange {
-                color: #bd7a1b;
+                color: $orange-dark;
             }
+	    color: $grey-dark;
         }
     }
-    ul.nav.navbar-nav li>a {
-        color: white;
-        &:hover {
-            color: #ccc;
-        }
+    ul.nav.navbar-nav {
+	li>a {
+	    line-height: 100px;
+            &:hover {
+		color: $grey-dark;
+            }
+	}
     }
 }
 
@@ -126,17 +148,6 @@ ul.nav.navbar-nav li>a {
     padding: 20px;
 }
 
-.navbar-transparent {
-    background-color: transparent;
-    border-color: transparent;
-    .navbar-brand {
-        color: white;
-    }
-    .navbar-brand:hover {
-        color: #ccc;
-    }
-}
-
 h2 {
     font-size: 36px;
     font-weight: bold;
@@ -144,13 +155,8 @@ h2 {
 
 #promotion {
     text-align: center;
-    margin-top: 10%;
-    @media screen and (min-width: 770px) {
-	margin-bottom: 7%;
-    }
     .promotion-header {
         font-weight: bold;
-        margin-bottom: 7%;
         h2 {
             font-size: 60px;
             margin-bottom: 20px;
@@ -190,7 +196,6 @@ h2 {
 
 .landing {
     min-height: 100%;
-    color: white;
 }
 
 .btn-icon {
@@ -203,7 +208,7 @@ h2 {
 .btn-link {
     color: white;
     &:hover {
-        color: #ccc;
+        color: $grey;
         text-decoration: none;
     }
 }

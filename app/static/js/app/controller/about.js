@@ -7,6 +7,5 @@ app.controller("AboutCtrl", function($scope, $http, $routeParams, $location, Ale
     /*
     * Entry point of the controller.
     */
-    $(".navbar").addClass("navbar-default").removeClass("navbar-transparent");
   }();
 });

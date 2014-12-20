@@ -49,7 +49,6 @@ app.controller("DashboardCtrl", function($scope, $http, $routeParams, $location,
     $scope.Auth.load(function() {}, function() {
       $location.url("/");
     });
-    $(".navbar").removeClass("navbar-transparent").addClass("navbar-default");
     $scope.getAlerts();
   }();
 });
