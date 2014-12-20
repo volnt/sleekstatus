@@ -9,17 +9,17 @@
           <div class="form-group col-lg-6 col-sm-10 col-xs-8">
             <input class="form-control input-bigger input-lg" ng-model="alert.url" disabled>
           </div>
-          <button class="btn btn-bigger btn-warning" type="button" ng-click="deleteAlert($index)"><i class="glyphicon glyphicon-trash"></i></button>
+          <button class="btn btn-default" type="button" ng-click="deleteAlert($index)"><i class="glyphicon glyphicon-trash"></i></button>
         </div>
       </form>
     </div>
     <hr>
     <form class="form" role="form" ng-submit="addAlert(alertUrl)">
-      <div class="webalert">
+      <div class="webalerts">
 	<div class="form-group col-lg-6 col-sm-10 col-xs-8">
           <input ng-model="alertUrl" type="text" class="form-control input-bigger input-lg" placeholder="http://www.website.com">
 	</div>
-	<button type="submit" class="btn btn-bigger btn-warning"><i class="glyphicon glyphicon-plus"></i></button>
+	<button type="submit" class="btn btn-cta"><i class="glyphicon glyphicon-plus"></i></button>
       </div>
     </form>      
   </div>

@@ -210,6 +210,14 @@ h1 {
     }
 }
 
+.webalerts {
+    button.btn {
+	&.btn-default, &.btn-cta {
+	    margin: 6px 0 6px 0;
+	}
+    }
+}
+
 .modal {
     .modal-content {
 	border-radius: 0;
