@@ -16,11 +16,11 @@
       <div class="form-group">
 	<input type="password" class="form-control input-bigger input-lg" id="input-password" placeholder="Password" ng-model="password">
       </div>
-      <button type="submit" class="btn btn-warning btn-cta">Start now</button>
+      <button type="submit" class="btn btn-cta">Start now</button>
     </form>
     <div ng-show="Auth.is_authenticated()">
-      <a href="#/dashboard" class="btn btn-warning btn-cta" style="margin-right: 10px">Access dashboard</a>
-      <button type="button" class="btn btn-link" ng-click="Auth.logout()">Log out</button>
+      <button class="btn btn-cta" style="margin-right: 10px">Access dashboard</a>
+      <button class="btn btn-default" ng-click="Auth.logout()">Log out</button>
     </div>
   </div>
 </section>

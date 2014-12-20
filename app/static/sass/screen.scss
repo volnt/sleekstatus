@@ -51,22 +51,23 @@ input:focus {
 
 #footer {
     background: $grey-dark;
-    color: $grey;
+    color: white;
 }
 
 form .btn-cta {
     width: 100%;
-    background: $orange;
-    border-color: $orange-dark;
-    &:hover {
-	background: $orange-dark;
-	border-color: $orange-dark;
-    }
 }
 
 .btn-cta {
-    font-family: sans-serif;
     font-size: 28px;
+    background: $orange;
+    border-color: $orange-dark;
+    color: white;
+    &:hover {
+	background: $orange-dark;
+	border-color: $orange-dark;
+	color: white;
+    }
 }
 
 .input-bigger {
@@ -89,6 +90,7 @@ section {
 
 #register {
     background: white;
+    text-align: center;
 }
 
 .navbar-brand {
@@ -266,9 +268,24 @@ h1 {
     padding-left: 0 !important;
 }
 
-#pricing {
+.page-header h1 {
+    padding-left: 20px;
+}
+
+#about {
     padding-top: 0;
+    .row {
+	padding-left: 20px;
+    }
+}
+
+.navbar-inverse .navbar-nav>li>a:focus {
+    color: $grey-dark;
+}
+
+#pricing {
     line-height: 30px;
+    padding-top: 0;
     .pricing-tab {
 	hr {
 	    border-top: 1px solid $grey;
