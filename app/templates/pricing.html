@@ -17,9 +17,9 @@
         </div>
 	<div ng-show="Auth.is_authenticated()">
 	  <hr>
-          <button class="btn btn-warning" data-toggle="modal" data-target=".modal-basic" ng-show="Auth.get().plan.id != plan.id">Subscribe</button>
-          <button class="btn btn-warning" ng-click="unsubscribe(plan)" ng-disabled="plan.loader.unsubscribe" ng-show="Auth.get().plan.id == plan.id">Unsubscribe</button>
-	  <div class="modal fade modal-basic" tabindex="-1" role="dialog" aria-labelledby="{{ plan.name }} subscription form" aria-hidden="true">
+          <button class="btn btn-cta" data-toggle="modal" data-target=".modal-{{ plan.id }}" ng-show="Auth.get().plan.id != plan.id">Subscribe</button>
+          <button class="btn btn-cta" ng-click="unsubscribe(plan)" ng-disabled="plan.loader.unsubscribe" ng-show="Auth.get().plan.id == plan.id">Unsubscribe</button>
+	  <div class="modal fade" ng-class="true ? 'modal-{{ plan.id }}' : ''" tabindex="-1" role="dialog" aria-labelledby="{{ plan.name }} subscription form" aria-hidden="true">
 	    <div class="modal-dialog modal-sm">
 	      <div class="modal-content row">
 		<div class="modal-header">
@@ -33,18 +33,18 @@
 		  <div class="modal-body">
 		    <span class="payment-errors"></span>
 		    <div class="form-group col-xs-12">
-		      <input class="form-control" type="text" size="20" ng-model="form.number" placeholder="Card Number">
+		      <input class="form-control" type="text" size="20" ng-model="plan.form.number" placeholder="Card Number">
 		    </div>
 		    <div class="form-group col-xs-6 no-padding-right">
-		      <input class="form-control" type="text" size="3" ng-model="form.cvc" placeholder="CVC">
+		      <input class="form-control" type="text" size="3" ng-model="plan.form.cvc" placeholder="CVC">
 		    </div>
 		    <div class="form-group col-xs-6 no-padding-left">
-		      <input class="form-control" type="text" size="5" ng-model="form.expiration" placeholder="MM/YY">
+		      <input class="form-control" type="text" size="5" ng-model="plan.form.expiration" placeholder="MM/YY">
 		    </div>
 		  </div>
 		  <div class="modal-footer col-xs-12 ">
 		    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-		    <button type="submit" class="btn btn-warning" ng-disabled="plan.loader.subscribe">Subscribe {{ plan.price }}$/mo</button> 
+		    <button type="submit" class="btn btn-cta" ng-disabled="plan.loader.subscribe">Subscribe {{ plan.price }}$/mo</button> 
 		    <img class="modal-loader" src="/static/img/loader.gif" ng-show="plan.loader.subscribe" />
 		  </div>
 		</form>
@@ -67,7 +67,7 @@
       <div class="form-group">
 	<input type="password" class="form-control input-bigger input-lg" id="input-password" placeholder="Password" ng-model="password">
       </div>
-      <button type="submit" class="btn btn-warning btn-cta">Start now</button>
+      <button type="submit" class="btn btn-cta btn-big">Start now</button>
     </form>
   </div>
 </div>

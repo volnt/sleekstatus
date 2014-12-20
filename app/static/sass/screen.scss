@@ -25,13 +25,8 @@ body {
     background: $grey-light;
 }
 
-.alerts-container {
-    padding: 20px;
-    background: white;
-}
-
 #dashboard {
-    margin-top: 50px;
+    padding-top: 0;
 }
 
 .btn-bigger {
@@ -54,12 +49,12 @@ input:focus {
     color: white;
 }
 
-form .btn-cta {
+form .btn-cta.btn-big {
     width: 100%;
+    font-size: 28px;
 }
 
 .btn-cta {
-    font-size: 28px;
     background: $orange;
     border-color: $orange-dark;
     color: white;
@@ -216,6 +211,9 @@ h1 {
 }
 
 .modal {
+    .modal-content {
+	border-radius: 0;
+    }
     .modal-header {
 	padding: 0;
 	margin-top: 15px;
@@ -225,11 +223,12 @@ h1 {
 	.modal-title {
 	    margin-left: 15px;
 	    margin-bottom: 10px;
+	    color: $grey-dark;
 	}
 	.modal-email {
 	    font-size: 12px;
-	    background: #f0ad4e;
-	    padding: 5px;
+	    background: $grey-dark;
+	    padding: 2px;
 	}
     }
     .modal-body {

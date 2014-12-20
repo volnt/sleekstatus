@@ -9,7 +9,7 @@ app.controller("PricingCtrl", function($scope, $http, $routeParams, $location, A
     plan.loader = {subscribe: true};
 
     try {
-      var exp_array = $scope.form.expiration.split('/');
+      var exp_array = plan.form.expiration.split('/');
     } catch (e) {
       console.log("Error : expiration date format is invalid.");
       plan.loader.subscribe = false;
@@ -22,8 +22,8 @@ app.controller("PricingCtrl", function($scope, $http, $routeParams, $location, A
     }
 
     Stripe.card.createToken({
-      number: $scope.form.number,
-      cvc: $scope.form.cvc,
+      number: plan.form.number,
+      cvc: plan.form.cvc,
       exp_month: exp_array[0],
       exp_year: exp_array[1]
     }, function(status, response) {

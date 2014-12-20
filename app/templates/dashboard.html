@@ -1,18 +1,11 @@
 <section id="dashboard">
-  <div class="container alerts-container">
+  <div class="container">
     <div class="page-header">
-      <h2 style="padding-left: 20px">Alerts setup <small>({{ alerts.length }}/{{ Auth.get().plan.alert_number || 0 }})</small></h2>
+      <h1>Alerts setup <small>({{ alerts.length }}/{{ Auth.get().plan.alert_number || 0 }})</small></h1>
     </div>
-    <div class="alerts" ng-hide="alerts.length">
-      <div class="alert">
-	<div class="col-xs-12">
-	  Add an alert below !
-	</div>
-      </div>
-    </div>
-    <div class="alerts" ng-show="alerts.length">
+    <div class="webalerts" ng-show="alerts.length">
       <form class="form" role="form">
-        <div class="alert" ng-repeat="alert in alerts">
+        <div class="webalert" ng-repeat="alert in alerts">
           <div class="form-group col-lg-6 col-sm-10 col-xs-8">
             <input class="form-control input-bigger input-lg" ng-model="alert.url" disabled>
           </div>
@@ -22,7 +15,7 @@
     </div>
     <hr>
     <form class="form" role="form" ng-submit="addAlert(alertUrl)">
-      <div class="alert">
+      <div class="webalert">
 	<div class="form-group col-lg-6 col-sm-10 col-xs-8">
           <input ng-model="alertUrl" type="text" class="form-control input-bigger input-lg" placeholder="http://www.website.com">
 	</div>
