@@ -47,6 +47,20 @@ input:focus {
 #footer {
     background: $grey-dark;
     color: white;
+    &>div>div>div {
+	padding-left: 40px;
+    }
+    h4 {
+	font-size: 1.1em;
+	font-weight: bold;
+    }
+    a {
+	text-decoration: none;
+	color: white;
+	&:hover {
+	    color: $grey;
+	}
+    }
 }
 
 form .btn-cta.btn-big {
