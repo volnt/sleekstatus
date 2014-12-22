@@ -33,8 +33,8 @@ sleekstatus-env.zip: /tmp/sleek-release /tmp/sleek-release/config.py
 /tmp/sleek-release/config.py:
 	@rm -f $@
 	@echo "AWS = {" >> $@
-	@echo "    'ACCESS_KEY_ID': $(AWS_ACCESS_KEY_ID)," >> $@
-	@echo "    'SECRET_ACCESS_KEY': $(AWS_SECRET_ACCESS_KEY)" >> $@
+	@echo "    'ACCESS_KEY_ID': '$(AWS_ACCESS_KEY_ID)'," >> $@
+	@echo "    'SECRET_ACCESS_KEY': '$(AWS_SECRET_ACCESS_KEY)'" >> $@
 	@echo "}" >> $@
 
 .PHONY: all install tests pep8 pyflakes pylint release
