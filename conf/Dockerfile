@@ -4,7 +4,7 @@ MAINTAINER Florent Espanet <florent.esp@gmail.com>
 
 # Dependencies
 RUN apt-get update
-RUN apt-get install -y git unzip wget net-tools build-essential
+RUN apt-get install -y unzip nginx
 RUN apt-get install -y python python-dev python-distribute python-pip
 
 # Add the application to the docker instance
