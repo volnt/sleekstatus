@@ -9,6 +9,7 @@ RUN apt-get install -y python python-dev python-distribute python-pip
 
 # Add the application to the docker instance
 ADD sleekstatus /sleekstatus/
+ADD config.py /sleekstatus/app/config.py
 WORKDIR /sleekstatus/
 
 # Forward the web port
@@ -16,3 +17,5 @@ EXPOSE 5000
 
 # Install the application
 RUN pip install -e /sleekstatus/
+
+CMD python run.py
