@@ -13,7 +13,7 @@ ADD config.py /sleekstatus/app/config.py
 WORKDIR /sleekstatus/
 
 # Forward the web port
-EXPOSE 5000
+EXPOSE 80
 
 # Install the application
 RUN pip install -e /sleekstatus/
