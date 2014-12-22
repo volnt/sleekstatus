@@ -22,7 +22,7 @@ sleekstatus-env.zip: /tmp/sleek-release /tmp/sleek-release/config.py
 	cd /tmp/sleek-release && zip -r $@ *
 	cp /tmp/sleek-release/$@ $@
 
-/tmp/sleek-release: Dockerfile Dockerrun.aws.json setup.py
+/tmp/sleek-release: Makefile
 	rm -rf $@
 	mkdir $@
 	cd $@ && git clone git@github.com:volnt/sleekstatus.git
