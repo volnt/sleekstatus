@@ -68,13 +68,13 @@ def fetch_zip():
     k.get_contents_to_filename("sleekstatus.zip".format(str(versions[-1])))
 
 def unzip():
-    return call(["unzip", "sleekstatus.zip"])
+    return call(["unzip", "sleekstatus.zip", "-d", "/root/sleekstatus"])
 
 def docker_build():
-    return call(["sudo", "docker", "build", "-t", "sleekstatus", "."])
+    return call(["docker", "build", "-t", "sleekstatus", "/root/sleekstatus"])
 
 def docker_run():
-    return call(["sudo", "docker", "run", "-pd", "80:80", "sleekstatus"])
+    return call(["docker", "run", "-pd", "80:80", "sleekstatus"])
 
 def main():
     fetch_zip()
