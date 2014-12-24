@@ -34,7 +34,7 @@ body {
 }
 
 input, button {
-    border-radius: 0!important;	
+    border-radius: 0!important;
 }
 
 input:focus {
@@ -152,7 +152,9 @@ ul.nav.navbar-nav li>a {
 }
 
 .form-register {
-    width: 50%;
+    @media screen and (min-width: 769px) {
+        width: 50%;
+    }
     margin: auto;
     border: solid 1px white;
     border-radius: 10px;
@@ -189,22 +191,23 @@ h1 {
     .glyphicon {
 	font-size: 30px;
     }
-    .advantage+.advantage {
-	border-left: $grey 1px solid;
+
+    @media screen and (min-width: 769px) {
+        .advantage+.advantage {
+	    border-left: $grey 1px solid;
+        }
     }
     .advantage {
-	padding: 30px;
+        @media screen and (min-width: 769px) {
+	    padding: 30px;
+        }
+
 	line-height: 30px;
 	@media screen and (min-width: 770px) {
 	    h3 {
 		margin-top: 10px;
 		margin-bottom: 10px;
 	    }
-	}
-    }
-    @media screen and (max-width: 769px) {
-	.advantage {
-	    margin-left: 20.85%;
 	}
     }
 }
