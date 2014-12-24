@@ -18,7 +18,10 @@ if "py.test" in sys.argv[0]:
     redis = redis.Redis(db=2)
     mode = "TEST"
 else:
-    redis = redis.Redis()
+    redis = redis.Redis(
+        host="wh.db18vl.ng.0001.usw2.cache.amazonaws.com",
+        port=6379
+    )
     mode = "PROD"
 
 stripe.api_key = "sk_test_Btmp0w2nKxakPnstPjToGwgP"
