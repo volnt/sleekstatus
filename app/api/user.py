@@ -67,11 +67,15 @@ class User(object):
 
         if not redis.hmset("sl:account:{}".format(sha), infos):
             raise SleekException("Could not save current user.", 401)
+        
         if register:
-            send_email.delay(
-                "florent.esp@gmail.com", "Welcome to sleekstatus !",
-                "Welcome message", [self.email]
-            )
+            try:
+                send_email.delay(
+                    "florent.esp@gmail.com", "Welcome to sleekstatus !",
+                    "Welcome message", [self.email]
+                )
+            except:
+                pass # Cannot send email
 
     def register(self):
         """
