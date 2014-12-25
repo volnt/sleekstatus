@@ -19,7 +19,7 @@ if "py.test" in sys.argv[0] or "--test" in sys.argv:
     mode = "TEST"
 else:
     redis = redis.Redis(
-        host="wh.db18vl.ng.0001.usw2.cache.amazonaws.com",
+        host="wh-redis.db18vl.ng.0001.usw2.cache.amazonaws.com",
         port=6379
     )
     mode = "PROD"
