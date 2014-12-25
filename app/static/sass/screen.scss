@@ -93,6 +93,10 @@ section {
     border-bottom: $grey solid 1px;
 }
 
+.navbar-header {
+    height: 100%;
+}
+
 .navbar-fixed-top {
     border-radius: 5px;
 }
@@ -127,6 +131,17 @@ ul.nav.navbar-nav li>a {
     margin-left: 10px;
 }
 
+.navbar-collapse {
+    @media screen and (max-width: 769px) {
+        background: white;
+    }
+}
+
+.navbar-toggle {
+    background: $grey-dark;
+    color: white;
+}
+
 .navbar-default {
     background: white;
     height: 130px;
@@ -143,7 +158,9 @@ ul.nav.navbar-nav li>a {
     }
     ul.nav.navbar-nav {
 	li>a {
-	    line-height: 100px;
+            @media screen and (min-width: 769px) {
+	        line-height: 100px;
+            }
             &:hover {
 		color: $grey-dark;
             }

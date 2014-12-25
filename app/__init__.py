@@ -14,7 +14,7 @@ app.secret_key = os.urandom(32)
 
 async = Celery('sl', broker='amqp://localhost')
 
-if "py.test" in sys.argv[0]:
+if "py.test" in sys.argv[0] or "--test" in sys.argv:
     redis = redis.Redis(db=2)
     mode = "TEST"
 else:
